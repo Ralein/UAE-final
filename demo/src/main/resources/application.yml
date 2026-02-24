@@ -44,23 +44,28 @@ spring:
           max-idle: 4
           min-idle: 1
 
-  # --- Security OAuth2 Placeholder ---
-  security:
-    oauth2:
-      client:
-        registration:
-          uaepass:
-            client-id: ${UAEPASS_CLIENT_ID:placeholder}
-            client-secret: ${UAEPASS_CLIENT_SECRET:placeholder}
-            scope: openid
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/uaepass"
-        provider:
-          uaepass:
-            authorization-uri: https://stg-id.uaepass.ae/idshub/authorize
-            token-uri: https://stg-id.uaepass.ae/idshub/token
-            user-info-uri: https://stg-id.uaepass.ae/idshub/userinfo
-            user-name-attribute: sub
+# --- UAE PASS OIDC Configuration ---
+uaepass:
+  client-id: ${UAEPASS_CLIENT_ID:placeholder}
+  client-secret: ${UAEPASS_CLIENT_SECRET:placeholder}
+  base-url: ${UAEPASS_BASE_URL:https://stg-id.uaepass.ae}
+  redirect-uri: ${APP_BASE_URL:http://localhost:8080}/auth/callback
+  scope: "openid urn:uae:digitalid:profile:general"
+  acr-values: "urn:safelayer:tws:policies:authentication:level:low"
+  ui-locales: "en"
+
+# --- App Configuration ---
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  frontend-url: ${FRONTEND_URL:http://localhost:4200}
+
+# --- IDN Encryption ---
+idn:
+  encryption-key: ${IDN_ENCRYPTION_KEY:default-dev-key-change-in-production!}
+
+# --- Token Encryption ---
+token:
+  encryption-key: ${TOKEN_ENCRYPTION_KEY:default-dev-token-key-change-me!!}
 
 # --- Actuator ---
 management:

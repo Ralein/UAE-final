@@ -4,6 +4,12 @@ spring:
       mode: always
       platform: postgresql
 
+uaepass:
+  base-url: https://stg-id.uaepass.ae
+  scope: "openid urn:uae:digitalid:profile:general"
+  acr-values: "urn:safelayer:tws:policies:authentication:level:low"
+  ui-locales: "en"
+
 logging:
   level:
     root: INFO

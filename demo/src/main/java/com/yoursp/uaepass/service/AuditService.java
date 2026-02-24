@@ -6,7 +6,6 @@ import com.yoursp.uaepass.model.entity.AuditLog;
 import com.yoursp.uaepass.repository.AuditLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

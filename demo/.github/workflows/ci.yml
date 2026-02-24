@@ -1,0 +1,55 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  JAVA_VERSION: '17'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Run tests
+        run: ./mvnw test -B
+        env:
+          # Secrets are referenced from GitHub Settings → Secrets and Variables → Actions
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_DB_USERNAME: ${{ secrets.SUPABASE_DB_USERNAME }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          UPSTASH_REDIS_URL: ${{ secrets.UPSTASH_REDIS_URL }}
+          UAEPASS_CLIENT_ID: ${{ secrets.UAEPASS_CLIENT_ID }}
+          UAEPASS_CLIENT_SECRET: ${{ secrets.UAEPASS_CLIENT_SECRET }}
+
+      - name: Package (skip tests)
+        run: ./mvnw package -DskipTests -B
+
+      - name: Build Docker image
+        run: docker build -t uaepass-sp:${{ github.sha }} .
+
+      # -------------------------------------------------------
+      # HOW TO ADD GITHUB SECRETS:
+      # 1. Go to your GitHub repo → Settings → Secrets and variables → Actions
+      # 2. Click "New repository secret"
+      # 3. Add each of these secrets:
+      #    - SUPABASE_DB_URL        (e.g. jdbc:postgresql://db.xxx.supabase.co:5432/postgres)
+      #    - SUPABASE_DB_USERNAME   (e.g. postgres)
+      #    - SUPABASE_DB_PASSWORD   (your Supabase DB password)
+      #    - UPSTASH_REDIS_URL      (e.g. rediss://default:xxx@xxx.upstash.io:6379)
+      #    - UAEPASS_CLIENT_ID      (from UAE PASS SP registration)
+      #    - UAEPASS_CLIENT_SECRET  (from UAE PASS SP registration)
+      # -------------------------------------------------------
