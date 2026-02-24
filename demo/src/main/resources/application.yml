@@ -1,0 +1,88 @@
+spring:
+  application:
+    name: uaepass-sp
+
+  # --- Datasource (Supabase PostgreSQL) ---
+  datasource:
+    url: ${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/uaepass}
+    username: ${SUPABASE_DB_USERNAME:postgres}
+    password: ${SUPABASE_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 900000
+      pool-name: UaePassHikariPool
+
+  # --- JPA / Hibernate ---
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+
+  # --- SQL Init (disabled by default, enabled in staging) ---
+  sql:
+    init:
+      mode: never
+
+  # --- Redis (Upstash) ---
+  data:
+    redis:
+      url: ${UPSTASH_REDIS_URL:redis://localhost:6379}
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 4
+          min-idle: 1
+
+  # --- Security OAuth2 Placeholder ---
+  security:
+    oauth2:
+      client:
+        registration:
+          uaepass:
+            client-id: ${UAEPASS_CLIENT_ID:placeholder}
+            client-secret: ${UAEPASS_CLIENT_SECRET:placeholder}
+            scope: openid
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/uaepass"
+        provider:
+          uaepass:
+            authorization-uri: https://stg-id.uaepass.ae/idshub/authorize
+            token-uri: https://stg-id.uaepass.ae/idshub/token
+            user-info-uri: https://stg-id.uaepass.ae/idshub/userinfo
+            user-name-attribute: sub
+
+# --- Actuator ---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# --- Logging ---
+logging:
+  level:
+    root: INFO
+    com.yoursp.uaepass: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+
+# --- Server ---
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+    include-message: never

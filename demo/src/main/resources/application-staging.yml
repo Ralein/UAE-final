@@ -1,0 +1,10 @@
+spring:
+  sql:
+    init:
+      mode: always
+      platform: postgresql
+
+logging:
+  level:
+    root: INFO
+    com.yoursp.uaepass: DEBUG

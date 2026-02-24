@@ -1,0 +1,19 @@
+spring:
+  sql:
+    init:
+      mode: never
+
+  security:
+    oauth2:
+      client:
+        provider:
+          uaepass:
+            authorization-uri: https://id.uaepass.ae/idshub/authorize
+            token-uri: https://id.uaepass.ae/idshub/token
+            user-info-uri: https://id.uaepass.ae/idshub/userinfo
+
+logging:
+  level:
+    root: WARN
+    com.yoursp.uaepass: INFO
+    org.hibernate.SQL: WARN
