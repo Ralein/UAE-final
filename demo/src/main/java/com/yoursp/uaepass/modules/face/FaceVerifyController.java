@@ -36,6 +36,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/face/verify")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class FaceVerifyController {
 
     private final FaceVerificationService faceService;

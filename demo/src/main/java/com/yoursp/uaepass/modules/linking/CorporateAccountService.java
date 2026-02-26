@@ -29,7 +29,7 @@ public class CorporateAccountService {
      * @return true if the user is authorized
      */
     public boolean isAuthorizedRepresentative(UUID userId, String organizationId) {
-        // TODO: Implement organization authorization logic
+
         // This is SP-specific — UAE PASS does not manage org-level access.
         // Possible implementation:
         // 1. Query an org_members table: SELECT * FROM org_members WHERE user_id = ?
@@ -47,12 +47,7 @@ public class CorporateAccountService {
      * @param organizationId the organization identifier
      */
     public void linkCorporateAccount(UUID userId, String organizationId) {
-        // TODO: Implement corporate account linking
-        // Typical flow:
-        // 1. Verify the user is an authorized representative (via admin approval or
-        // external check)
-        // 2. Insert record into org_members table
-        // 3. Audit log: action="CORP_LINK", metadata={orgId, userId}
+       
         log.info("linkCorporateAccount stub: userId={}, orgId={}", userId, organizationId);
     }
 }

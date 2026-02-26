@@ -1,6 +1,5 @@
 package com.yoursp.uaepass.modules.signature;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yoursp.uaepass.model.entity.SigningJob;
 import com.yoursp.uaepass.repository.SigningJobRepository;
 import com.yoursp.uaepass.service.AuditService;
@@ -21,6 +20,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class SignatureCompletionServiceTest {
 
     @Mock

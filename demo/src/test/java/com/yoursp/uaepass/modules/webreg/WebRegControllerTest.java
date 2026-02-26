@@ -26,6 +26,7 @@ import static org.mockito.Mockito.*;
  * Tests for WebRegController — focuses on SP_TYPE gating.
  */
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class WebRegControllerTest {
 
     @Mock

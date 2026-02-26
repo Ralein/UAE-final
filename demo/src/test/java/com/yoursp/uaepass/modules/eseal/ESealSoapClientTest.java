@@ -10,6 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class ESealSoapClientTest {
 
     private ESealSoapClient soapClient;

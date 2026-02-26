@@ -3,6 +3,27 @@
 # Run: SPRING_PROFILES_ACTIVE=mock ./mvnw spring-boot:run
 # ============================================================
 
+# Default to H2 in-memory DB for mock profile (no external DB needed)
+# To use Supabase, comment these out and use .env
+spring:
+  datasource:
+    url: jdbc:h2:mem:uaepass;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver # Fixed from org.jboss.handler.h2.jdbc.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  sql:
+    init:
+      mode: never
+
 # Override SOAP endpoints to use local mock controllers
 eseal:
   soap-endpoint: http://localhost:8080/mock/soap/eseal
@@ -14,12 +35,6 @@ signature:
 # Override Hash Signing SDK to use local mock
 hashsign:
   sdk-url: http://localhost:8080/mock/hashsdk
-
-# SQL init: run schema.sql on startup for fresh dev DB
-spring:
-  sql:
-    init:
-      mode: always
 
 # More verbose logging for development
 logging:

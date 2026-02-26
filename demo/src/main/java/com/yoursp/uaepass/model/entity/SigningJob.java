@@ -39,7 +39,7 @@ public class SigningJob {
     private String signIdentityId;
 
     /** JSONB column — stored as raw JSON string, parsed manually when needed. */
-    @Column(name = "documents", columnDefinition = "JSONB")
+    @Column(name = "documents", columnDefinition = "TEXT")
     private String documents;
 
     @Column(name = "finish_callback_url", columnDefinition = "TEXT")

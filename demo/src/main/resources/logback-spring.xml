@@ -24,7 +24,7 @@
     </appender>
 
     <!-- ===== Profile-based root logger ===== -->
-    <springProfile name="default | local">
+    <springProfile name="default | local | mock">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>

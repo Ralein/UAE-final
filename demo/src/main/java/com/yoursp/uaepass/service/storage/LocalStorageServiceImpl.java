@@ -16,7 +16,7 @@ import java.nio.file.Paths;
  */
 @Slf4j
 @Service
-@Profile({ "default", "staging" })
+@Profile({ "default", "staging", "mock" })
 public class LocalStorageServiceImpl implements StorageService {
 
     private static final Path STORAGE_ROOT = Paths.get("/tmp/uaepass-storage");

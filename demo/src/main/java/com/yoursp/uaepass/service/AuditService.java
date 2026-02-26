@@ -15,6 +15,7 @@ import java.util.UUID;
  * Service for recording audit trail entries.
  * Should be called from every sensitive operation (login, sign, verify, etc.).
  */
+@SuppressWarnings("null")
 @Slf4j
 @Service
 @RequiredArgsConstructor

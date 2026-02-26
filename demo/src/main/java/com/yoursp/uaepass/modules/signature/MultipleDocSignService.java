@@ -31,6 +31,7 @@ import java.util.*;
  * status tracking in the signing_jobs.documents JSONB column.
  * </p>
  */
+@SuppressWarnings({ "null", "rawtypes" })
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -99,7 +100,6 @@ public class MultipleDocSignService {
 
         HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(body, headers);
 
-        @SuppressWarnings("unchecked")
         ResponseEntity<Map> response = restTemplate.exchange(
                 signApiBase + "/signer_processes",
                 HttpMethod.POST, entity, Map.class);

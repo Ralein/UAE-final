@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
  * <li>Circuit breaker: opens after 3 failures, half-open after 30s</li>
  * </ul>
  */
+@SuppressWarnings("null")
 @Slf4j
 @Service
 public class SpTokenService {

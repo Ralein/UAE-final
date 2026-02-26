@@ -32,11 +32,11 @@ public class AuditLog {
     @Column(name = "entity_id")
     private String entityId;
 
-    @Column(name = "ip_address", columnDefinition = "INET")
+    @Column(name = "ip_address")
     private String ipAddress;
 
     /** JSONB column — stored as raw JSON string, parsed manually when needed. */
-    @Column(name = "metadata", columnDefinition = "JSONB")
+    @Column(name = "metadata", columnDefinition = "TEXT")
     private String metadata;
 
     @Column(name = "created_at", updatable = false)

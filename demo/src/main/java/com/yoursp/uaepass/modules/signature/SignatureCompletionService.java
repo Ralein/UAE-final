@@ -27,6 +27,7 @@ import java.util.Map;
  * <li>Cleans up document from UAE PASS</li>
  * </ul>
  */
+@SuppressWarnings("null")
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -158,7 +159,6 @@ public class SignatureCompletionService {
         return response.getBody();
     }
 
-    @SuppressWarnings("unchecked")
     private String extractDocumentContentUrl(String documentsJson) {
         try {
             List<Map<String, Object>> docs = objectMapper.readValue(documentsJson,
@@ -173,7 +173,6 @@ public class SignatureCompletionService {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     private void deleteDocumentFromUaePass(String documentsJson, String spToken) {
         try {
             List<Map<String, Object>> docs = objectMapper.readValue(documentsJson,

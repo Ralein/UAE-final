@@ -36,6 +36,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/hashsign")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class HashSigningController {
 
     private final SingleHashSignService singleService;

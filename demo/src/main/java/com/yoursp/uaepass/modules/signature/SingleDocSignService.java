@@ -25,6 +25,7 @@ import java.util.*;
 /**
  * Single-document signing flow with UAE PASS eSign SP v2 API.
  */
+@SuppressWarnings({ "null", "rawtypes" })
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -91,7 +92,6 @@ public class SingleDocSignService {
 
         log.info("Creating signer process at {} for user {}", signApiBase + "/signer_processes", userId);
 
-        @SuppressWarnings("unchecked")
         ResponseEntity<Map> response = restTemplate.exchange(
                 signApiBase + "/signer_processes",
                 HttpMethod.POST,

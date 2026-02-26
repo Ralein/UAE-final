@@ -27,7 +27,6 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,6 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Handles the complete authorization code flow:
  * /auth/login → redirect to UAE PASS → /auth/callback → session cookie
  */
+@SuppressWarnings("null")
 @Slf4j
 @RestController
 @RequestMapping("/auth")
@@ -71,7 +71,7 @@ public class AuthController {
 
         String state = stateService.generateState("AUTH", redirectAfter, null);
 
-        String authorizeUrl = UriComponentsBuilder.fromHttpUrl(uaePassProperties.getAuthorizeUrl())
+        String authorizeUrl = UriComponentsBuilder.fromUriString(uaePassProperties.getAuthorizeUrl())
                 .queryParam("response_type", "code")
                 .queryParam("client_id", uaePassProperties.getClientId())
                 .queryParam("redirect_uri", uaePassProperties.getRedirectUri())
@@ -308,6 +308,7 @@ public class AuthController {
 
         log.debug("Exchanging auth code for tokens at {}", uaePassProperties.getTokenUrl());
 
+        @SuppressWarnings("rawtypes")
         ResponseEntity<Map> response = restTemplate.exchange(
                 uaePassProperties.getTokenUrl(),
                 HttpMethod.POST,
@@ -326,6 +327,7 @@ public class AuthController {
 
         log.debug("Fetching user info from {}", uaePassProperties.getUserInfoUrl());
 
+        @SuppressWarnings("rawtypes")
         ResponseEntity<Map> response = restTemplate.exchange(
                 uaePassProperties.getUserInfoUrl(),
                 HttpMethod.GET,

@@ -30,6 +30,7 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class BulkHashSignService {
 
     private final HashSignSdkClient sdkClient;

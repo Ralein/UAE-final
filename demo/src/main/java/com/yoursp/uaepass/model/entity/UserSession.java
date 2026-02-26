@@ -32,7 +32,7 @@ public class UserSession {
     @Column(name = "token_expires")
     private OffsetDateTime tokenExpires;
 
-    @Column(name = "ip_address", columnDefinition = "INET")
+    @Column(name = "ip_address")
     private String ipAddress;
 
     @Column(name = "user_agent", columnDefinition = "TEXT")

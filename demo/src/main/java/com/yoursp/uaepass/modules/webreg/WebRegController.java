@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@SuppressWarnings({ "null", "rawtypes", "unchecked" })
 public class WebRegController {
 
     private static final String SESSION_COOKIE_NAME = SessionAuthFilter.SESSION_COOKIE_NAME;
@@ -196,7 +197,6 @@ public class WebRegController {
     // Helpers (same as AuthController)
     // ================================================================
 
-    @SuppressWarnings("unchecked")
     private Map<String, Object> exchangeCodeForTokens(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -216,7 +216,6 @@ public class WebRegController {
         return resp.getBody();
     }
 
-    @SuppressWarnings("unchecked")
     private Map<String, Object> fetchUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);

@@ -31,6 +31,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/eseal")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class ESealController {
 
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

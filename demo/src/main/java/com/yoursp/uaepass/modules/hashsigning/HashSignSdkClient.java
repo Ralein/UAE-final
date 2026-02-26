@@ -56,7 +56,6 @@ public class HashSignSdkClient {
             // Build multipart-like JSON request with base64 PDF
             String base64Pdf = java.util.Base64.getEncoder().encodeToString(pdfBytes);
 
-            @SuppressWarnings("unchecked")
             String requestBody = objectMapper.writeValueAsString(Map.of(
                     "document", base64Pdf,
                     "signProp", signProp));

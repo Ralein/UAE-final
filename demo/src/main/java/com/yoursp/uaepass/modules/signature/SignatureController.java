@@ -39,6 +39,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/signature")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class SignatureController {
 
     private final SingleDocSignService singleDocSignService;
@@ -138,9 +139,6 @@ public class SignatureController {
 
         String downloadUrl = null;
         if ("SIGNED".equals(job.getStatus())) {
-            String key = Boolean.TRUE.equals(job.getLtvApplied())
-                    ? "signed-ltv/" + jobId + ".pdf"
-                    : "signed/" + jobId + ".pdf";
             downloadUrl = "/signature/download/" + jobId;
         }
 

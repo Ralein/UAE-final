@@ -2,7 +2,6 @@ package com.yoursp.uaepass.modules.linking;
 
 import com.yoursp.uaepass.config.UaePassProperties;
 import com.yoursp.uaepass.model.entity.User;
-import com.yoursp.uaepass.modules.auth.CryptoUtil;
 import com.yoursp.uaepass.modules.auth.StateService;
 import com.yoursp.uaepass.modules.auth.dto.StatePayload;
 import com.yoursp.uaepass.modules.auth.exception.InvalidStateException;
@@ -36,6 +35,7 @@ import java.util.UUID;
  * <li>GET /auth/link/status — Check current link status</li>
  * </ul>
  */
+@SuppressWarnings({ "null", "rawtypes" })
 @Slf4j
 @RestController
 @RequestMapping("/auth")
@@ -65,7 +65,7 @@ public class UserLinkingController {
 
         String state = stateService.generateState("MANUAL_LINK", "/settings", currentUser.getId());
 
-        String authorizeUrl = UriComponentsBuilder.fromHttpUrl(uaePassProperties.getAuthorizeUrl())
+        String authorizeUrl = UriComponentsBuilder.fromUriString(uaePassProperties.getAuthorizeUrl())
                 .queryParam("response_type", "code")
                 .queryParam("client_id", uaePassProperties.getClientId())
                 .queryParam("redirect_uri", uaePassProperties.getRedirectUri())

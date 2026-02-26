@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * <li>Each state can only be consumed once — replay attacks are prevented</li>
  * </ul>
  */
+@SuppressWarnings("null")
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -86,8 +87,8 @@ public class StateService {
 
         String key = KEY_PREFIX + state;
 
-        // Atomic GET + DEL via Lua script
-        String json = redisTemplate.execute(CONSUME_SCRIPT, Collections.singletonList(key));
+        // Atomic GET + DEL via Lua script (result may be null if key doesn't exist)
+        String json = castToString(redisTemplate.execute(CONSUME_SCRIPT, Collections.singletonList(key)));
 
         if (json == null) {
             log.warn("OAuth state not found or expired: {}", state);
@@ -101,5 +102,9 @@ public class StateService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to deserialize state payload", e);
         }
+    }
+
+    private String castToString(Object obj) {
+        return obj != null ? obj.toString() : null;
     }
 }
