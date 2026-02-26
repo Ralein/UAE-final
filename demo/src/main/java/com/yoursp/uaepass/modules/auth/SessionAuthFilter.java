@@ -41,8 +41,13 @@ public class SessionAuthFilter extends OncePerRequestFilter {
 
     public static final String SESSION_COOKIE_NAME = "UAEPASS_SESSION";
 
-    private static final List<String> SKIP_PREFIXES = List.of(
-            "/auth/", "/public/", "/actuator/");
+    /**
+     * Routes where the filter is completely skipped (no cookie check at all).
+     * These are public endpoints that never need session context.
+     */
+    private static final List<String> SKIP_PATHS = List.of(
+            "/auth/login", "/auth/callback", "/auth/logout",
+            "/auth/link", "/auth/link/callback");
 
     private final UserSessionRepository sessionRepository;
     private final UserRepository userRepository;
@@ -50,7 +55,10 @@ public class SessionAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return SKIP_PREFIXES.stream().anyMatch(path::startsWith);
+        if (path.startsWith("/public/") || path.startsWith("/actuator/")) {
+            return true;
+        }
+        return SKIP_PATHS.stream().anyMatch(path::equals);
     }
 
     @Override

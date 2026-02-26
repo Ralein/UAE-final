@@ -20,7 +20,7 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "uaepass_uuid", unique = true, nullable = false)
+    @Column(name = "uaepass_uuid", unique = true)
     private String uaepassUuid;
 
     @Column(name = "spuuid")
@@ -78,8 +78,7 @@ public class User {
             createdAt = now;
         if (updatedAt == null)
             updatedAt = now;
-        if (linkedAt == null)
-            linkedAt = now;
+        // linkedAt is set explicitly by linking services — NOT auto-set
     }
 
     @PreUpdate

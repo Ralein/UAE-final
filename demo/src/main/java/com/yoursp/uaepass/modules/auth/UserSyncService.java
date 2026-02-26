@@ -1,6 +1,7 @@
 package com.yoursp.uaepass.modules.auth;
 
 import com.yoursp.uaepass.model.entity.User;
+import com.yoursp.uaepass.modules.linking.AutoLinkingService;
 import com.yoursp.uaepass.repository.UserRepository;
 import com.yoursp.uaepass.service.AuditService;
 import lombok.RequiredArgsConstructor;
@@ -9,24 +10,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Synchronizes user data from UAE PASS /userinfo response with local DB.
  * <ul>
- * <li>Creates new user if not found by uaepass_uuid</li>
- * <li>Auto-links by idn for SOP2/SOP3 users</li>
+ * <li>Delegates auto-linking to {@link AutoLinkingService}</li>
+ * <li>Creates new user if auto-link finds no match</li>
  * <li>Updates profile fields on every login</li>
  * <li>Encrypts idn before storing</li>
  * <li>Logs to audit_log</li>
  * </ul>
- *
- * IMPORTANT: userType mapping:
- * SOP1 = visitor (fewer attributes)
- * SOP2 = resident
- * SOP3 = citizen
  */
 @Slf4j
 @Service
@@ -34,6 +29,7 @@ import java.util.UUID;
 public class UserSyncService {
 
     private final UserRepository userRepository;
+    private final AutoLinkingService autoLinkingService;
     private final AuditService auditService;
 
     @Value("${idn.encryption-key}")
@@ -50,43 +46,23 @@ public class UserSyncService {
         String uaepassUuid = getStringValue(userInfo, "uuid");
         String idn = getStringValue(userInfo, "idn");
         String userType = getStringValue(userInfo, "userType");
-        String spuuid = getStringValue(userInfo, "spuuid");
 
         if (uaepassUuid == null || uaepassUuid.isBlank()) {
             throw new IllegalArgumentException("UAE PASS uuid is required");
         }
 
-        // 1. Try to find by uaepass_uuid
-        Optional<User> existingUser = userRepository.findByUaepassUuid(uaepassUuid);
+        // Delegate auto-linking to AutoLinkingService
+        User user = autoLinkingService.tryAutoLink(uaepassUuid, idn, userType);
 
-        User user;
         boolean isNewUser = false;
 
-        if (existingUser.isPresent()) {
-            user = existingUser.get();
-            log.debug("Existing user found by uaepass_uuid: {}", user.getId());
-        } else {
-            // 2. For SOP2/SOP3 — try auto-link by idn
-            if (idn != null && !idn.isBlank() && ("SOP2".equals(userType) || "SOP3".equals(userType))) {
-                String encryptedIdn = CryptoUtil.encryptAES256(idn, idnEncryptionKey);
-                Optional<User> linkedUser = userRepository.findByIdn(encryptedIdn);
-                if (linkedUser.isPresent()) {
-                    user = linkedUser.get();
-                    user.setUaepassUuid(uaepassUuid);
-                    log.info("Auto-linked user {} by idn (userType={})", user.getId(), userType);
-                } else {
-                    user = new User();
-                    isNewUser = true;
-                    user.setUaepassUuid(uaepassUuid);
-                    log.info("Creating new user for uaepass_uuid: {} (userType={})", uaepassUuid, userType);
-                }
-            } else {
-                // 3. Create new user
-                user = new User();
-                isNewUser = true;
-                user.setUaepassUuid(uaepassUuid);
-                log.info("Creating new user for uaepass_uuid: {} (userType={})", uaepassUuid, userType);
-            }
+        if (user == null) {
+            // No existing user found — create new
+            user = new User();
+            isNewUser = true;
+            user.setUaepassUuid(uaepassUuid);
+            user.setLinkedAt(OffsetDateTime.now());
+            log.info("Creating new user for uaepass_uuid: {} (userType={})", uaepassUuid, userType);
         }
 
         // Update profile fields on every login
@@ -100,7 +76,7 @@ public class UserSyncService {
                 isNewUser ? "USER_REGISTERED" : "LOGIN",
                 "USER",
                 savedUser.getId().toString(),
-                null, // IP set by controller
+                null,
                 Map.of("userType", userType != null ? userType : "unknown",
                         "isNewUser", isNewUser));
 
