@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/callback", "/auth/logout").permitAll()
                         .requestMatchers("/auth/link", "/auth/link/callback").permitAll()
                         .requestMatchers("/signature/callback").permitAll()
+                        .requestMatchers("/hashsign/callback").permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/actuator/info").permitAll()

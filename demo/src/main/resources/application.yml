@@ -76,6 +76,17 @@ signature:
   verify-soap-endpoint: ${SIGNATURE_VERIFY_SOAP_ENDPOINT:}
   job-expiry-minutes: 60
 
+# --- eSeal ---
+eseal:
+  soap-endpoint: ${ESEAL_SOAP_ENDPOINT:}
+  cert-subject-name: ${ESEAL_CERT_SUBJECT_NAME:CN=YourOrg eSeal, O=Your Org, L=Dubai, C=AE}
+
+# --- Hash Signing ---
+hashsign:
+  sdk-url: ${HASH_SDK_URL:http://localhost:8081}
+  scope: "urn:uae:digitalid:backend_api:hash_signing urn:safelayer:eidas:sign:identity:use:server"
+  auth-url: ${UAEPASS_BASE_URL:https://stg-id.uaepass.ae}/trustedx-authserver/oauth/hsign-as
+
 # --- Actuator ---
 management:
   endpoints:
