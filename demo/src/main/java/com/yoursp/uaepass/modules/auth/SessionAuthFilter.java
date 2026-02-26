@@ -25,11 +25,11 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Session authentication filter.
+ * Session authentication filter with security hardening.
  * <ul>
  * <li>Reads {@code UAEPASS_SESSION} cookie</li>
- * <li>Looks up session in DB</li>
- * <li>Checks expiry</li>
+ * <li>Looks up session in DB, checks expiry (token + 24h absolute)</li>
+ * <li>IP mismatch warning (logs, doesn't block)</li>
  * <li>Sets SecurityContext with authenticated principal</li>
  * <li>Returns 401 JSON for Angular (no redirect)</li>
  * </ul>
@@ -41,12 +41,15 @@ public class SessionAuthFilter extends OncePerRequestFilter {
 
     public static final String SESSION_COOKIE_NAME = "UAEPASS_SESSION";
 
+    /** 24-hour absolute session expiry regardless of activity */
+    private static final long ABSOLUTE_SESSION_HOURS = 24;
+
     /**
      * Routes where the filter is completely skipped (no cookie check at all).
-     * These are public endpoints that never need session context.
      */
     private static final List<String> SKIP_PATHS = List.of(
             "/auth/login", "/auth/callback", "/auth/logout",
+            "/auth/register", "/auth/register/callback",
             "/auth/link", "/auth/link/callback",
             "/signature/callback",
             "/hashsign/callback",
@@ -58,7 +61,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        if (path.startsWith("/public/") || path.startsWith("/actuator/")) {
+        if (path.startsWith("/public/") || path.startsWith("/actuator/")
+                || path.startsWith("/internal/")) {
             return true;
         }
         return SKIP_PATHS.stream().anyMatch(path::equals);
@@ -86,11 +90,27 @@ public class SessionAuthFilter extends OncePerRequestFilter {
 
         UserSession session = sessionOpt.get();
 
-        // Check expiry
+        // Check token expiry
         if (session.getTokenExpires() != null && session.getTokenExpires().isBefore(OffsetDateTime.now())) {
             log.debug("Session expired for user {}", session.getUserId());
             sendUnauthorized(response, "Session expired");
             return;
+        }
+
+        // 24h absolute session expiry
+        if (session.getCreatedAt() != null
+                && session.getCreatedAt().plusHours(ABSOLUTE_SESSION_HOURS).isBefore(OffsetDateTime.now())) {
+            log.info("Absolute session expiry (24h) for user {}", session.getUserId());
+            sessionRepository.delete(session);
+            sendUnauthorized(response, "Session expired");
+            return;
+        }
+
+        // IP mismatch warning (warn only — do not block)
+        String currentIp = getClientIp(request);
+        if (session.getIpAddress() != null && !session.getIpAddress().equals(currentIp)) {
+            log.warn("SESSION_IP_CHANGE: userId={}, originalIp={}, currentIp={}, sessionId={}",
+                    session.getUserId(), session.getIpAddress(), currentIp, session.getId());
         }
 
         // Update last_active
@@ -126,6 +146,14 @@ public class SessionAuthFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .findFirst()
                 .orElse(null);
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xff = request.getHeader("X-Forwarded-For");
+        if (xff != null && !xff.isBlank()) {
+            return xff.split(",")[0].trim();
+        }
+        return request.getRemoteAddr();
     }
 
     private void sendUnauthorized(HttpServletResponse response, String message) throws IOException {

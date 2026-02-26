@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +22,16 @@ public interface UserSessionRepository extends JpaRepository<UserSession, UUID> 
 
     @Modifying
     @Transactional
+    @Query("DELETE FROM UserSession s WHERE s.userId = :userId")
+    int deleteAllByUserId(UUID userId);
+
+    @Modifying
+    @Transactional
     @Query("UPDATE UserSession s SET s.lastActive = CURRENT_TIMESTAMP WHERE s.id = :sessionId")
     void updateLastActive(UUID sessionId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM UserSession s WHERE s.tokenExpires < :cutoff")
+    int deleteExpiredSessions(OffsetDateTime cutoff);
 }

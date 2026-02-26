@@ -19,6 +19,17 @@ public interface SigningJobRepository extends JpaRepository<SigningJob, UUID> {
 
     List<SigningJob> findByUserIdOrderByCreatedAtDesc(UUID userId);
 
+    List<SigningJob> findAllByUserId(UUID userId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM SigningJob j WHERE j.userId = :userId")
+    int deleteAllByUserId(UUID userId);
+
+    long countByStatus(String status);
+
+    long countByStatusAndLtvApplied(String status, boolean ltvApplied);
+
     @Modifying
     @Transactional
     @Query("UPDATE SigningJob j SET j.status = 'EXPIRED' " +

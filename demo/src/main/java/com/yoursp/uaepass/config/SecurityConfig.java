@@ -18,66 +18,90 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Phase 2 security configuration.
+ * Production-hardened security configuration.
  * <ul>
+ * <li>Security headers: HSTS, X-Content-Type-Options, X-Frame-Options, CSP,
+ * Cache-Control</li>
+ * <li>Rate limiting filter registered before session auth</li>
  * <li>/auth/**, /public/**, /actuator/health — permitAll</li>
  * <li>All other routes — require authenticated session</li>
  * <li>CSRF disabled (using httpOnly cookie + SameSite=Strict instead)</li>
- * <li>CORS: Angular dev origin + staging frontend URL</li>
- * <li>SessionAuthFilter registered before
- * UsernamePasswordAuthenticationFilter</li>
  * </ul>
  */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${app.frontend-url:http://localhost:4200}")
-    private String frontendUrl;
+        @Value("${app.frontend-url:http://localhost:4200}")
+        private String frontendUrl;
 
-    private final SessionAuthFilter sessionAuthFilter;
+        private final SessionAuthFilter sessionAuthFilter;
+        private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(SessionAuthFilter sessionAuthFilter) {
-        this.sessionAuthFilter = sessionAuthFilter;
-    }
+        public SecurityConfig(SessionAuthFilter sessionAuthFilter, RateLimitFilter rateLimitFilter) {
+                this.sessionAuthFilter = sessionAuthFilter;
+                this.rateLimitFilter = rateLimitFilter;
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/callback", "/auth/logout").permitAll()
-                        .requestMatchers("/auth/link", "/auth/link/callback").permitAll()
-                        .requestMatchers("/signature/callback").permitAll()
-                        .requestMatchers("/hashsign/callback").permitAll()
-                        .requestMatchers("/face/verify/callback").permitAll()
-                        .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
-                        .requestMatchers("/actuator/info").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .oauth2Login(AbstractHttpConfigurer::disable);
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        return http.build();
-    }
+                                // ── Security Headers ──
+                                .headers(headers -> headers
+                                                .contentTypeOptions(opt -> {
+                                                }) // X-Content-Type-Options: nosniff
+                                                .frameOptions(frame -> frame.deny()) // X-Frame-Options: DENY
+                                                .httpStrictTransportSecurity(hsts -> hsts
+                                                                .includeSubDomains(true)
+                                                                .maxAgeInSeconds(31536000)) // HSTS: 1 year
+                                                .contentSecurityPolicy(csp -> csp
+                                                                .policyDirectives(
+                                                                                "default-src 'self'; script-src 'self'; frame-ancestors 'none'"))
+                                                .cacheControl(cache -> {
+                                                })) // Cache-Control: no-cache, no-store, must-revalidate
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(
-                "http://localhost:4200",
-                frontendUrl));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/auth/login", "/auth/callback", "/auth/logout")
+                                                .permitAll()
+                                                .requestMatchers("/auth/register", "/auth/register/callback")
+                                                .permitAll()
+                                                .requestMatchers("/auth/link", "/auth/link/callback").permitAll()
+                                                .requestMatchers("/signature/callback").permitAll()
+                                                .requestMatchers("/hashsign/callback").permitAll()
+                                                .requestMatchers("/face/verify/callback").permitAll()
+                                                .requestMatchers("/internal/**").permitAll()
+                                                .requestMatchers("/mock/**").permitAll()
+                                                .requestMatchers("/public/**").permitAll()
+                                                .requestMatchers("/actuator/health").permitAll()
+                                                .requestMatchers("/actuator/info").permitAll()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                                .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                                .formLogin(AbstractHttpConfigurer::disable)
+                                .httpBasic(AbstractHttpConfigurer::disable)
+                                .oauth2Login(AbstractHttpConfigurer::disable);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+                return http.build();
+        }
+
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Arrays.asList(
+                                "http://localhost:4200",
+                                frontendUrl));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(List.of("*"));
+                config.setAllowCredentials(true);
+                config.setMaxAge(3600L);
+
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", config);
+                return source;
+        }
 }

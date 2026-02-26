@@ -2,6 +2,12 @@ spring:
   application:
     name: uaepass-sp
 
+  # --- File Upload Limits ---
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   # --- Datasource (Supabase PostgreSQL) ---
   datasource:
     url: ${SUPABASE_DB_URL:jdbc:postgresql://localhost:5432/uaepass}
@@ -91,6 +97,18 @@ hashsign:
 face:
   acr-values: ${FACE_ACR_VALUES:urn:digitalid:authentication:flow:mobileid}
   verification-window-minutes: ${FACE_VERIFY_WINDOW_MINUTES:15}
+
+# --- SP Type ---
+sp:
+  type: ${SP_TYPE:PRIVATE}
+
+# --- Rate Limiting ---
+rate-limit:
+  enabled: ${RATE_LIMIT_ENABLED:true}
+
+# --- Internal API ---
+internal:
+  api-key: ${INTERNAL_API_KEY:change-me-in-production}
 
 # --- Actuator ---
 management:

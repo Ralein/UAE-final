@@ -1,0 +1,28 @@
+# ============================================================
+# Mock profile — points SOAP + SDK endpoints to local mocks
+# Run: SPRING_PROFILES_ACTIVE=mock ./mvnw spring-boot:run
+# ============================================================
+
+# Override SOAP endpoints to use local mock controllers
+eseal:
+  soap-endpoint: http://localhost:8080/mock/soap/eseal
+
+signature:
+  ltv-soap-endpoint: http://localhost:8080/mock/soap/ltv
+  verify-soap-endpoint: http://localhost:8080/mock/soap/verify
+
+# Override Hash Signing SDK to use local mock
+hashsign:
+  sdk-url: http://localhost:8080/mock/hashsdk
+
+# SQL init: run schema.sql on startup for fresh dev DB
+spring:
+  sql:
+    init:
+      mode: always
+
+# More verbose logging for development
+logging:
+  level:
+    com.yoursp.uaepass.mock: DEBUG
+    com.yoursp.uaepass: DEBUG

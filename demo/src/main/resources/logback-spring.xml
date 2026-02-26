@@ -3,10 +3,14 @@
 
     <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="uaepass-sp"/>
 
+    <!-- Log masking: access_token, client_secret, idn, mobile -->
+    <conversionRule conversionWord="mask"
+                    converterClass="com.yoursp.uaepass.config.LogMaskingConverter" />
+
     <!-- ===== Console Appender (local dev) ===== -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{correlationId:-}] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{correlationId:-}] %-5level %logger{36} - %mask(%msg)%n</pattern>
         </encoder>
     </appender>
 

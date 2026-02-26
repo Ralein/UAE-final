@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUaepassUuid(String uaepassUuid);
 
     Optional<User> findByIdn(String idn);
+
+    long countByUaepassUuidIsNotNull();
+
+    long countByIdnIsNotNull();
 }

@@ -176,3 +176,40 @@ Add these **GitHub Secrets** to your repository:
 - `UPSTASH_REDIS_URL`
 - `UAEPASS_CLIENT_ID`
 - `UAEPASS_CLIENT_SECRET`
+
+---
+
+## UAE PASS Assessment Checklist
+
+Before submitting for UAE PASS review, verify all items below. Use the self-assessment endpoint: `GET /internal/assessment-checklist` (header: `X-Internal-Key`).
+
+| # | Item | How We Implement It | Verification |
+|---|------|---------------------|-------------|
+| 1 | **Auth OIDC Flow** | `/auth/login` → `/auth/callback` → `/auth/me` | Automated: login/callback integration test |
+| 2 | **State Single-Use** | `StateService.consumeState()` — Redis GETDEL (atomic) | Automated: replay test returns `invalid_state` |
+| 3 | **LTV on Signatures** | `LtvService.applyLtv()` called post-signing | DB check: `signing_jobs.ltv_applied = true` |
+| 4 | **UUID Primary Key** | `uaepass_uuid` used for all linking — never email/mobile | DB check: all users linked by uuid |
+| 5 | **Face UUID Match** | `FaceVerificationService.complete()` compares UUIDs | Unit test + security incident logging |
+| 6 | **httpOnly Sessions** | `cookie.setHttpOnly(true)`, `SameSite=Strict` | Browser DevTools: cookie flags |
+| 7 | **IDN Encrypted** | `CryptoUtil.encryptAES256()` before DB write | DB spot-check: encrypted values |
+| 8 | **Tokens Not Logged** | `LogMaskingConverter` masks Bearer/access_token in logs | Manual log audit |
+| 9 | **Audit Log** | `AuditService.log()` on all sensitive operations | DB check: `audit_log` populated |
+
+### Security Controls
+
+| Control | Implementation |
+|---------|---------------|
+| Security Headers | HSTS, X-Content-Type-Options, X-Frame-Options: DENY, CSP, Cache-Control: no-store |
+| Rate Limiting | Redis sliding window (`RateLimitFilter`) — login: 10/min, register: 3/5min |
+| Input Validation | Bean Validation (`@Valid`), PDF magic bytes check, filename sanitization |
+| Session Hardening | 24h absolute expiry, IP mismatch warning, token rotation after sensitive ops |
+| Data Protection | AES-256 IDN encryption, Redis-only token refs, log masking |
+| PDPL Compliance | `DELETE /users/me/data`, `GET /users/me/data-export` |
+
+### Self-Assessment Endpoint
+
+```bash
+curl -H "X-Internal-Key: your-key" http://localhost:8080/internal/assessment-checklist
+```
+
+Returns JSON with pass/fail/warn for each item above.
