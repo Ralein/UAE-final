@@ -1,5 +1,6 @@
 package com.yoursp.uaepass.modules.eseal;
 
+import com.yoursp.uaepass.modules.face.FaceVerified;
 import com.yoursp.uaepass.model.entity.EsealJob;
 import com.yoursp.uaepass.model.entity.User;
 import com.yoursp.uaepass.modules.eseal.dto.*;
@@ -44,6 +45,7 @@ public class ESealController {
     // POST /eseal/pdf — PAdES seal
     // ================================================================
 
+    @FaceVerified
     @PostMapping("/pdf")
     public ResponseEntity<?> sealPdf(@RequestParam("file") MultipartFile file,
             HttpServletRequest request) {

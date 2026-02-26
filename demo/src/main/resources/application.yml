@@ -87,6 +87,11 @@ hashsign:
   scope: "urn:uae:digitalid:backend_api:hash_signing urn:safelayer:eidas:sign:identity:use:server"
   auth-url: ${UAEPASS_BASE_URL:https://stg-id.uaepass.ae}/trustedx-authserver/oauth/hsign-as
 
+# --- Face Verification ---
+face:
+  acr-values: ${FACE_ACR_VALUES:urn:digitalid:authentication:flow:mobileid}
+  verification-window-minutes: ${FACE_VERIFY_WINDOW_MINUTES:15}
+
 # --- Actuator ---
 management:
   endpoints:

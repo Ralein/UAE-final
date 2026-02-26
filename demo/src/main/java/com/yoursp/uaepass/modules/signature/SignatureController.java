@@ -1,5 +1,6 @@
 package com.yoursp.uaepass.modules.signature;
 
+import com.yoursp.uaepass.modules.face.FaceVerified;
 import com.yoursp.uaepass.model.entity.SigningJob;
 import com.yoursp.uaepass.model.entity.User;
 import com.yoursp.uaepass.modules.signature.dto.SignInitiateRequest;
@@ -53,6 +54,7 @@ public class SignatureController {
     // POST /signature/initiate
     // ================================================================
 
+    @FaceVerified
     @PostMapping("/initiate")
     public ResponseEntity<?> initiate(@Valid @RequestBody SignInitiateRequest request,
             HttpServletRequest httpRequest) {

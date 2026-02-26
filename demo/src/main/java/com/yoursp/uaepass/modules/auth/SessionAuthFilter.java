@@ -49,7 +49,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
             "/auth/login", "/auth/callback", "/auth/logout",
             "/auth/link", "/auth/link/callback",
             "/signature/callback",
-            "/hashsign/callback");
+            "/hashsign/callback",
+            "/face/verify/callback");
 
     private final UserSessionRepository sessionRepository;
     private final UserRepository userRepository;
