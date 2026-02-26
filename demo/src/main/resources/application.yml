@@ -67,6 +67,15 @@ idn:
 token:
   encryption-key: ${TOKEN_ENCRYPTION_KEY:default-dev-token-key-change-me!!}
 
+# --- Digital Signature ---
+signature:
+  sp-token-url: ${UAEPASS_BASE_URL:https://stg-id.uaepass.ae}/trustedx-authserver/oauth/main-as/token
+  sign-api-base: ${UAEPASS_BASE_URL:https://stg-id.uaepass.ae}/trustedx-resources/esignsp/v2
+  sign-scope: "urn:safelayer:eidas:sign:process:document"
+  ltv-soap-endpoint: ${LTV_SOAP_ENDPOINT:}
+  verify-soap-endpoint: ${SIGNATURE_VERIFY_SOAP_ENDPOINT:}
+  job-expiry-minutes: 60
+
 # --- Actuator ---
 management:
   endpoints:

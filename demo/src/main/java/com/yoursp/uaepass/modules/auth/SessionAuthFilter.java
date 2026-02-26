@@ -47,7 +47,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
      */
     private static final List<String> SKIP_PATHS = List.of(
             "/auth/login", "/auth/callback", "/auth/logout",
-            "/auth/link", "/auth/link/callback");
+            "/auth/link", "/auth/link/callback",
+            "/signature/callback");
 
     private final UserSessionRepository sessionRepository;
     private final UserRepository userRepository;
