@@ -66,7 +66,8 @@ public class SecurityConfig {
                                                 })) // Cache-Control: no-cache, no-store, must-revalidate
 
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/login", "/auth/callback", "/auth/logout")
+                                                .requestMatchers("/auth/login", "/auth/callback", "/auth/logout",
+                                                                "/auth/dev-login")
                                                 .permitAll()
                                                 .requestMatchers("/auth/register", "/auth/register/callback")
                                                 .permitAll()

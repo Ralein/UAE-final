@@ -16,3 +16,8 @@ This document tracks all mock endpoints and bypasses created for local developme
     *   **Location:** `src/main/java/com/yoursp/uaepass/modules/auth/SessionAuthFilter.java` (line ~55)
     *   **Purpose:** Added `/auth/dev-login` to the `SKIP_PATHS` whitelist so it doesn't try to look for a session cookie during login.
     *   **Action Required for Prod:** Remove `"/auth/dev-login"` from the `SKIP_PATHS` array.
+
+2.  **SecurityConfig Whitelist:**
+    *   **Location:** `src/main/java/com/yoursp/uaepass/config/SecurityConfig.java` (line ~69)
+    *   **Purpose:** Added `/auth/dev-login` to the `requestMatchers` permitAll list to bypass Spring Security.
+    *   **Action Required for Prod:** Remove `"/auth/dev-login"` from the `requestMatchers` list.
