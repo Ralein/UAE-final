@@ -1,69 +1,165 @@
-<div class="dashboard-container">
-    <!-- Top Navigation Bar -->
+<div class="dashboard-page">
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-content">
             <div class="nav-brand">
-                <div class="fingerprint-nav-icon"></div>
-                <span>Digital ID</span>
+                <svg class="nav-logo" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="19" stroke="#00B27A" stroke-width="2" />
+                    <path
+                        d="M20 8C15.6 8 12 11.6 12 16v4c0 1.1.9 2 2 2h1v-6c0-2.8 2.2-5 5-5s5 2.2 5 5v6h1c1.1 0 2-.9 2-2v-4c0-4.4-3.6-8-8-8z"
+                        fill="#00B27A" />
+                    <path d="M17 22v-6c0-1.7 1.3-3 3-3s3 1.3 3 3v6" stroke="#00B27A" stroke-width="1.5" fill="none" />
+                    <circle cx="20" cy="26" r="2" fill="#00B27A" />
+                    <path d="M20 28v3" stroke="#00B27A" stroke-width="1.5" />
+                </svg>
+                <span>UAE PASS</span>
             </div>
-            <button class="btn-logout" (click)="logout()">Logout</button>
+            <button class="btn-logout" (click)="logout()">
+                <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+                    <path d="M7 17H4a2 2 0 01-2-2V5a2 2 0 012-2h3M14 14l4-4-4-4M18 10H7" stroke="currentColor"
+                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Sign out
+            </button>
         </div>
     </nav>
 
     <main class="dashboard-main">
+        <!-- Loading -->
         <div *ngIf="loading" class="loading-state">
             <div class="spinner"></div>
-            <p>Loading your profile...</p>
+            <p>Loading your Digital ID...</p>
         </div>
 
-        <div *ngIf="error" class="error-state">
-            <p>{{ error }}</p>
-            <a href="/" class="btn-primary">Return to Login</a>
-        </div>
-
-        <div *ngIf="userProfile && !loading" class="profile-content">
-            <h1 class="welcome-text">Welcome, {{ userProfile.firstname }} {{ userProfile.lastnameEn }}</h1>
-
-            <!-- Premium ID Card -->
-            <div class="id-card">
-                <div class="id-card-header">
-                    <div class="id-card-logo">UAE PASS</div>
-                    <div class="id-card-type">{{ userProfile.userType }}</div>
+        <div *ngIf="!loading && userProfile" class="dashboard-content">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-avatar">
+                    {{ userProfile.firstname.charAt(0) }}{{ userProfile.lastnameEn.charAt(0) }}
                 </div>
-
-                <div class="id-card-body">
-                    <div class="id-card-row">
-                        <div class="id-card-label">Full Name</div>
-                        <div class="id-card-value">{{ userProfile.fullnameEn }}</div>
-                    </div>
-
-                    <div class="id-card-row">
-                        <div class="id-card-label">Emirates ID / IDN</div>
-                        <div class="id-card-value font-mono">{{ userProfile.idn }}</div>
-                    </div>
-
-                    <div class="id-card-row">
-                        <div class="id-card-label">Email Address</div>
-                        <div class="id-card-value">{{ userProfile.email }}</div>
-                    </div>
-
-                    <div class="id-card-row split-row">
-                        <div>
-                            <div class="id-card-label">Nationality</div>
-                            <div class="id-card-value">{{ userProfile.nationalityEn }}</div>
-                        </div>
-                        <div>
-                            <div class="id-card-label">Mobile Number</div>
-                            <div class="id-card-value">+{{ userProfile.mobile }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="id-card-footer">
-                    <div class="id-card-uuid">UUID: {{ userProfile.uaepassUuid }}</div>
+                <div class="welcome-info">
+                    <h1>Welcome, {{ userProfile.firstname }}</h1>
+                    <p>Your digital identity is verified and active</p>
                 </div>
             </div>
 
+            <div class="cards-grid">
+                <!-- Digital ID Card -->
+                <div class="id-card">
+                    <div class="id-card-header">
+                        <div class="id-card-brand">
+                            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                                <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" />
+                                <path
+                                    d="M12 6c-2.2 0-4 1.8-4 4v2c0 .6.4 1 1 1h.5v-3c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5v3h.5c.6 0 1-.4 1-1v-2c0-2.2-1.8-4-4-4z"
+                                    fill="white" />
+                            </svg>
+                            <span>UAE PASS Digital ID</span>
+                        </div>
+                        <span class="id-card-badge">{{ userProfile.userType }}</span>
+                    </div>
+
+                    <div class="id-card-body">
+                        <div class="id-field">
+                            <span class="id-label">Full Name</span>
+                            <span class="id-value">{{ userProfile.fullnameEn }}</span>
+                        </div>
+
+                        <div class="id-field">
+                            <span class="id-label">Emirates ID</span>
+                            <span class="id-value id-mono">{{ userProfile.idn }}</span>
+                        </div>
+
+                        <div class="id-field">
+                            <span class="id-label">Email</span>
+                            <span class="id-value">{{ userProfile.email }}</span>
+                        </div>
+
+                        <div class="id-row">
+                            <div class="id-field">
+                                <span class="id-label">Nationality</span>
+                                <span class="id-value">{{ userProfile.nationalityEn }}</span>
+                            </div>
+                            <div class="id-field">
+                                <span class="id-label">Date of Birth</span>
+                                <span class="id-value">{{ userProfile.dob }}</span>
+                            </div>
+                        </div>
+
+                        <div class="id-row">
+                            <div class="id-field">
+                                <span class="id-label">Gender</span>
+                                <span class="id-value">{{ userProfile.gender }}</span>
+                            </div>
+                            <div class="id-field">
+                                <span class="id-label">Mobile</span>
+                                <span class="id-value">+{{ userProfile.mobile }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="id-card-footer">
+                        <span class="id-uuid">{{ userProfile.uaepassUuid }}</span>
+                    </div>
+                </div>
+
+                <!-- Session Info Card -->
+                <div class="session-card" *ngIf="sessionInfo">
+                    <h3 class="session-title">
+                        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+                            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 3v5h4" stroke="#00B27A" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        Session Information
+                    </h3>
+
+                    <div class="session-field">
+                        <span class="session-label">Status</span>
+                        <span class="session-value">
+                            <span class="status-dot"></span>
+                            Active
+                        </span>
+                    </div>
+
+                    <div class="session-field">
+                        <span class="session-label">Logged in at</span>
+                        <span class="session-value">{{ formattedLoginTime }}</span>
+                    </div>
+
+                    <div class="session-field">
+                        <span class="session-label">Expires at</span>
+                        <span class="session-value">{{ formattedExpiry }}</span>
+                    </div>
+
+                    <div class="session-field">
+                        <span class="session-label">Token</span>
+                        <span class="session-value session-token">{{ sessionInfo.token }}</span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="actions-card">
+                    <h3 class="actions-title">Available Services</h3>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <div class="service-icon si-1">🏛</div>
+                            <span>Government Services</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon si-2">📋</div>
+                            <span>Document Signing</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon si-3">🔐</div>
+                            <span>Digital Vault</span>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon si-4">📱</div>
+                            <span>Mobile Verification</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </div>

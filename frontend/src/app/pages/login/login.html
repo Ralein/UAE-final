@@ -1,42 +1,142 @@
-<div class="login-container">
-    <div class="login-card">
-        <div class="logo-container">
-            <div class="fingerprint-icon"></div>
-        </div>
-        <h1 class="login-title">Login to UAE PASS</h1>
+<div class="login-page">
+    <!-- Background pattern -->
+    <div class="bg-pattern"></div>
 
-        <div class="mock-warning">
-            <span>For local development only</span>
-        </div>
-
-        <div class="action-buttons">
-            <!-- Dev Login Bypass Button -->
-            <a href="http://localhost:8080/auth/dev-login" class="btn btn-dev">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    <path d="m9 12 2 2 4-4"></path>
+    <!-- Header -->
+    <header class="login-header">
+        <div class="header-content">
+            <div class="uaepass-brand">
+                <svg class="uaepass-logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="19" stroke="#00B27A" stroke-width="2" />
+                    <path
+                        d="M20 8C15.6 8 12 11.6 12 16v4c0 1.1.9 2 2 2h1v-6c0-2.8 2.2-5 5-5s5 2.2 5 5v6h1c1.1 0 2-.9 2-2v-4c0-4.4-3.6-8-8-8z"
+                        fill="#00B27A" />
+                    <path d="M17 22v-6c0-1.7 1.3-3 3-3s3 1.3 3 3v6" stroke="#00B27A" stroke-width="1.5" fill="none" />
+                    <circle cx="20" cy="26" r="2" fill="#00B27A" />
+                    <path d="M20 28v3" stroke="#00B27A" stroke-width="1.5" />
                 </svg>
-                Instant Dev Bypass Login
-            </a>
-
-            <div class="divider">
-                <span>OR</span>
+                <span class="brand-text">UAE PASS</span>
             </div>
+            <div class="header-links">
+                <a href="#">English</a>
+                <span class="lang-divider">|</span>
+                <a href="#">العربية</a>
+            </div>
+        </div>
+    </header>
 
-            <!-- Real UAE PASS Button -->
-            <a href="http://localhost:8080/auth/login" class="btn btn-uaepass">
-                Continue with UAE PASS (Staging)
-            </a>
+    <main class="login-main">
+        <!-- STEP 1: Emirates ID Input -->
+        <div class="login-card" *ngIf="state() === 'idle'">
+            <div class="card-accent"></div>
+
+            <div class="card-body">
+                <div class="uaepass-icon">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="32" r="30" stroke="#00B27A" stroke-width="2.5" opacity="0.3" />
+                        <circle cx="32" cy="32" r="22" stroke="#00B27A" stroke-width="2" opacity="0.5" />
+                        <circle cx="32" cy="32" r="14" stroke="#00B27A" stroke-width="1.5" opacity="0.7" />
+                        <circle cx="32" cy="32" r="6" fill="#00B27A" />
+                    </svg>
+                </div>
+
+                <h1 class="login-title">Sign in with UAE PASS</h1>
+                <p class="login-subtitle">Enter your Emirates ID to continue</p>
+
+                <form (ngSubmit)="onSubmit()" class="login-form">
+                    <div class="input-group">
+                        <label for="emiratesId">Emirates ID Number</label>
+                        <input type="text" id="emiratesId" [(ngModel)]="emiratesId" name="emiratesId"
+                            placeholder="784-XXXX-XXXXXXX-X" autocomplete="off" class="emirates-input" />
+                        <div class="input-hint">Your 15-digit Emirates ID number</div>
+                    </div>
+
+                    <div class="error-msg" *ngIf="errorMessage()">
+                        {{ errorMessage() }}
+                    </div>
+
+                    <button type="submit" class="btn-uaepass-green">
+                        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                            <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" />
+                        </svg>
+                        Sign in
+                    </button>
+                </form>
+
+                <div class="alt-options">
+                    <p>Don't have a UAE PASS account?</p>
+                    <a href="https://selfcare.uaepass.ae" target="_blank" class="create-link">Create new account</a>
+                </div>
+            </div>
         </div>
 
-        <div class="footer-links">
-            <p>Don't have a UAE PASS account? <a href="#">Create new account</a></p>
-            <a href="#" class="recover-link">Recover your account</a>
+        <!-- STEP 2: Verifying Identity -->
+        <div class="login-card" *ngIf="state() === 'verifying'">
+            <div class="card-accent"></div>
+            <div class="card-body state-card">
+                <div class="verification-spinner">
+                    <div class="spinner-ring"></div>
+                    <svg class="shield-icon" viewBox="0 0 24 24" fill="none" width="28" height="28">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#00B27A" stroke-width="1.5"
+                            fill="none" />
+                    </svg>
+                </div>
+                <h2>Verifying your identity</h2>
+                <p class="state-subtitle">Connecting to UAE PASS authentication server...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="page-footer">
+        <!-- STEP 3: Approve on Phone -->
+        <div class="login-card" *ngIf="state() === 'approving'">
+            <div class="card-accent"></div>
+            <div class="card-body state-card">
+                <div class="phone-icon">
+                    <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
+                        <rect x="14" y="4" width="20" height="40" rx="3" stroke="#00B27A" stroke-width="2"
+                            fill="none" />
+                        <circle cx="24" cy="38" r="2" fill="#00B27A" />
+                        <rect x="18" y="8" width="12" height="22" rx="1" fill="#E8F5E9" />
+                    </svg>
+                </div>
+
+                <h2>Approve sign in request</h2>
+                <p class="state-subtitle">Open the UAE PASS app on your phone and enter this code:</p>
+
+                <div class="verification-code">
+                    <span *ngFor="let digit of verificationCode().split('')" class="code-digit">{{ digit }}</span>
+                </div>
+
+                <div class="waiting-indicator">
+                    <div class="pulse-dot"></div>
+                    <span>Waiting for approval...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Success -->
+        <div class="login-card" *ngIf="state() === 'success'">
+            <div class="card-accent accent-success"></div>
+            <div class="card-body state-card">
+                <div class="success-icon">
+                    <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+                        <circle cx="32" cy="32" r="30" fill="#E8F5E9" stroke="#00B27A" stroke-width="2" />
+                        <path d="M20 32l8 8 16-16" stroke="#00B27A" stroke-width="3" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h2>Identity Verified</h2>
+                <p class="state-subtitle">Redirecting to your dashboard...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="login-footer">
         <div class="footer-nav">
             <a href="#">Home</a>
             <a href="#">About</a>
@@ -45,6 +145,6 @@
             <a href="#">Kiosk Locations</a>
             <a href="#">Service Provider</a>
         </div>
-        <p class="copyright">Copyright © 2026 UAE PASS All rights reserved.</p>
-    </div>
+        <p class="copyright">© 2026 UAE PASS. All rights reserved.</p>
+    </footer>
 </div>

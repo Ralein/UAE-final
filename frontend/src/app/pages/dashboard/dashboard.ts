@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { MockAuthService, MockUserProfile } from '../../core/services/mock-auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,28 +11,41 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.css',
 })
 export class DashboardComponent implements OnInit {
-  userProfile: any = null;
-  loading: boolean = true;
-  error: string | null = null;
+  userProfile: MockUserProfile | null = null;
+  sessionInfo: { token: string; loginTime: string; expiresAt: string } | null = null;
+  loading = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private authService: MockAuthService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.http.get('http://localhost:8080/auth/me').subscribe({
-      next: (data) => {
-        this.userProfile = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Failed to load profile', err);
-        this.error = 'Failed to load profile. Please log in again.';
-        this.loading = false;
-      }
-    });
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/']);
+      return;
+    }
+
+    // Simulate loading delay
+    setTimeout(() => {
+      this.userProfile = this.authService.getProfile();
+      this.sessionInfo = this.authService.getSessionInfo();
+      this.loading = false;
+    }, 600);
   }
 
   logout() {
-    // Basic frontend logout redirect
-    window.location.href = 'http://localhost:8080/auth/logout';
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
+  get formattedLoginTime(): string {
+    if (!this.sessionInfo) return '';
+    return new Date(this.sessionInfo.loginTime).toLocaleString();
+  }
+
+  get formattedExpiry(): string {
+    if (!this.sessionInfo) return '';
+    return new Date(this.sessionInfo.expiresAt).toLocaleString();
   }
 }
