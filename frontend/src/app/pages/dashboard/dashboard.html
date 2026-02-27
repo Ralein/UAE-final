@@ -1,0 +1,69 @@
+<div class="dashboard-container">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-brand">
+                <div class="fingerprint-nav-icon"></div>
+                <span>Digital ID</span>
+            </div>
+            <button class="btn-logout" (click)="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div *ngIf="loading" class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading your profile...</p>
+        </div>
+
+        <div *ngIf="error" class="error-state">
+            <p>{{ error }}</p>
+            <a href="/" class="btn-primary">Return to Login</a>
+        </div>
+
+        <div *ngIf="userProfile && !loading" class="profile-content">
+            <h1 class="welcome-text">Welcome, {{ userProfile.firstname }} {{ userProfile.lastnameEn }}</h1>
+
+            <!-- Premium ID Card -->
+            <div class="id-card">
+                <div class="id-card-header">
+                    <div class="id-card-logo">UAE PASS</div>
+                    <div class="id-card-type">{{ userProfile.userType }}</div>
+                </div>
+
+                <div class="id-card-body">
+                    <div class="id-card-row">
+                        <div class="id-card-label">Full Name</div>
+                        <div class="id-card-value">{{ userProfile.fullnameEn }}</div>
+                    </div>
+
+                    <div class="id-card-row">
+                        <div class="id-card-label">Emirates ID / IDN</div>
+                        <div class="id-card-value font-mono">{{ userProfile.idn }}</div>
+                    </div>
+
+                    <div class="id-card-row">
+                        <div class="id-card-label">Email Address</div>
+                        <div class="id-card-value">{{ userProfile.email }}</div>
+                    </div>
+
+                    <div class="id-card-row split-row">
+                        <div>
+                            <div class="id-card-label">Nationality</div>
+                            <div class="id-card-value">{{ userProfile.nationalityEn }}</div>
+                        </div>
+                        <div>
+                            <div class="id-card-label">Mobile Number</div>
+                            <div class="id-card-value">+{{ userProfile.mobile }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="id-card-footer">
+                    <div class="id-card-uuid">UUID: {{ userProfile.uaepassUuid }}</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
