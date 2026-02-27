@@ -52,7 +52,7 @@ public class SessionAuthFilter extends OncePerRequestFilter {
     private static final List<String> SKIP_PATHS = List.of(
             "/auth/login", "/auth/callback", "/auth/logout",
             "/auth/register", "/auth/register/callback",
-            "/auth/link", "/auth/link/callback",
+            "/auth/link", "/auth/link/callback", "/auth/dev-login",
             "/signature/callback",
             "/hashsign/callback",
             "/face/verify/callback");

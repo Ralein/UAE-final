@@ -213,3 +213,15 @@ curl -H "X-Internal-Key: your-key" http://localhost:8080/internal/assessment-che
 ```
 
 Returns JSON with pass/fail/warn for each item above.
+
+# Start UAE PASS login (redirects to UAE PASS)
+curl http://localhost:8080/auth/login
+
+# Web registration
+curl http://localhost:8080/auth/register
+
+# Internal assessment checklist (needs internal key)
+curl -H "X-Internal-Key: be926d208f205b0221e3574d324f6b4d" http://localhost:8080/internal/assessment-checklist
+
+cd /Users/ralein/Desktop/Project/UAE-pass/demo
+source .env && SPRING_PROFILES_ACTIVE=mock ./mvnw spring-boot:run
