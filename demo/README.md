@@ -208,9 +208,8 @@ Before submitting for UAE PASS review, verify all items below. Use the self-asse
 
 ### Self-Assessment Endpoint
 
-```bash
 curl -H "X-Internal-Key: your-key" http://localhost:8080/internal/assessment-checklist
-```
+
 
 Returns JSON with pass/fail/warn for each item above.
 
