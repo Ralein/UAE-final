@@ -1,107 +1,57 @@
-/* ── Login Page Layout ── */
+/* ═══════════════════════════════════════════════
+   UAE PASS Login — Exact match to staging
+   stg-ids.uaepass.ae
+   ═══════════════════════════════════════════════ */
+
 .login-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #f5f7f6;
-    position: relative;
+    background: #f4f4f4;
 }
 
-.bg-pattern {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(0, 178, 122, 0.04) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 178, 122, 0.03) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+/* ── Top teal bar (matching staging) ── */
+.top-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #2d8e8e 0%, #3ca4a4 50%, #2d8e8e 100%);
+    flex-shrink: 0;
 }
 
-/* ── Header ── */
-.login-header {
-    background: #fff;
-    border-bottom: 1px solid #e8ecef;
-    padding: 0.875rem 2rem;
-    position: relative;
-    z-index: 2;
-}
-
-.header-content {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.uaepass-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-}
-
-.uaepass-logo {
-    width: 32px;
-    height: 32px;
-}
-
-.brand-text {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #2a3039;
-    letter-spacing: 0.5px;
-}
-
-.header-links {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-}
-
-.header-links a {
-    color: #6c757d;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.header-links a:hover {
-    color: #00B27A;
-}
-
-.lang-divider {
-    color: #dee2e6;
-}
-
-/* ── Main content ── */
+/* ── Main ── */
 .login-main {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    position: relative;
-    z-index: 1;
+}
+
+/* ── Login wrapper (card + tooltip side by side) ── */
+.login-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
 }
 
 /* ── Card ── */
 .login-card {
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
-    width: 100%;
-    max-width: 420px;
-    overflow: hidden;
-    animation: cardSlideUp 0.4s ease-out;
+    width: 480px;
+    max-width: 100%;
+    padding: 3rem 3rem 2.5rem;
+    text-align: center;
+    animation: fadeUp 0.35s ease-out;
 }
 
-@keyframes cardSlideUp {
+.center-card {
+    width: 480px;
+    max-width: 100%;
+}
+
+@keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(10px);
     }
 
     to {
@@ -110,42 +60,52 @@
     }
 }
 
-.card-accent {
-    height: 4px;
-    background: linear-gradient(90deg, #00B27A 0%, #00D68F 100%);
+/* ── Fingerprint Icon ── */
+.fingerprint-icon {
+    display: flex;
+    justify-content: center;
+
+
 }
 
-.accent-success {
-    background: linear-gradient(90deg, #00B27A 0%, #00E676 100%);
+.fingerprint-icon img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+
+
 }
 
-.card-body {
-    padding: 2.5rem 2rem;
-    text-align: center;
+.fingerprint-icon svg {
+    width: 72px;
+    height: 80px;
 }
 
-/* ── Fingerprint / ID icon ── */
-.uaepass-icon {
-    margin-bottom: 1.5rem;
+.fingerprint-icon.pulsing {
+    animation: gentlePulse 1.5s ease-in-out infinite;
 }
 
-.uaepass-icon svg {
-    width: 64px;
-    height: 64px;
+@keyframes gentlePulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.04);
+        opacity: 0.75;
+    }
 }
 
 /* ── Title ── */
 .login-title {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #2a3039;
-    margin: 0 0 0.4rem;
-}
-
-.login-subtitle {
-    color: #6c757d;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #333;
     margin: 0 0 2rem;
+    letter-spacing: -0.3px;
 }
 
 /* ── Form ── */
@@ -153,217 +113,261 @@
     text-align: left;
 }
 
-.input-group {
+.input-wrapper {
+    margin-bottom: 0.5rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    border: 1.5px solid #d4d4d4;
+    border-radius: 25px;
+    font-size: 0.88rem;
+    color: #333;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #4fb5b5;
+    box-shadow: 0 0 0 3px rgba(79, 181, 181, 0.1);
+}
+
+.login-input::placeholder {
+    color: #aaa;
+    font-size: 0.86rem;
+}
+
+.input-wrapper.has-error .login-input {
+    border-color: #dc3545;
+}
+
+/* ── Error message ── */
+.error-msg {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #dc3545;
+    font-size: 0.82rem;
+    margin-bottom: 0.75rem;
+    padding-left: 0.25rem;
+}
+
+/* ── Remember me ── */
+.remember-row {
     margin-bottom: 1.25rem;
 }
 
-.input-group label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.emirates-input {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-    letter-spacing: 1.5px;
-    color: #2a3039;
-    background: #fafbfc;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.emirates-input:focus {
-    outline: none;
-    border-color: #00B27A;
-    box-shadow: 0 0 0 3px rgba(0, 178, 122, 0.12);
-    background: #fff;
-}
-
-.emirates-input::placeholder {
-    color: #adb5bd;
-    letter-spacing: 2px;
-}
-
-.input-hint {
-    font-size: 0.75rem;
-    color: #adb5bd;
-    margin-top: 0.35rem;
-}
-
-.error-msg {
-    background: #fff5f5;
-    color: #e53e3e;
-    border: 1px solid #fed7d7;
-    padding: 0.6rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-    font-weight: 500;
-}
-
-/* ── Green UAE PASS button ── */
-.btn-uaepass-green {
+.checkbox-label {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
+    font-size: 0.88rem;
+    color: #555;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: #4fb5b5;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* ── Login Button (teal gradient — exact staging match) ── */
+.btn-login {
     width: 100%;
-    padding: 0.875rem;
-    background: #00B27A;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #5ab8b8 0%, #6dc5c5 50%, #5ab8b8 100%);
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 25px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
     font-family: inherit;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
 }
 
-.btn-uaepass-green:hover {
-    background: #009968;
+.btn-login:hover {
+    background: linear-gradient(135deg, #4fa8a8 0%, #5fb8b8 50%, #4fa8a8 100%);
+    box-shadow: 0 4px 14px rgba(90, 184, 184, 0.35);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 178, 122, 0.3);
 }
 
-.btn-uaepass-green:active {
+.btn-login:active {
     transform: translateY(0);
 }
 
-/* ── Alt options ── */
-.alt-options {
-    margin-top: 1.75rem;
+/* ── Footer links ── */
+.footer-links {
+    margin-top: 2rem;
     text-align: center;
-    padding-top: 1.25rem;
-    border-top: 1px solid #f0f2f5;
 }
 
-.alt-options p {
-    color: #6c757d;
-    font-size: 0.85rem;
-    margin: 0 0 0.35rem;
+.footer-links p {
+    color: #555;
+    font-size: 0.88rem;
+    margin: 0 0 0.5rem;
 }
 
-.create-link {
-    color: #00B27A;
-    font-weight: 600;
+.footer-links a {
+    color: #4fb5b5;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-.create-link:hover {
+.footer-links a:hover {
     text-decoration: underline;
 }
 
-/* ── State cards (verifying, approving, success) ── */
-.state-card {
-    padding: 3rem 2rem;
-}
-
-.state-card h2 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #2a3039;
-    margin: 1rem 0 0.4rem;
-}
-
-.state-subtitle {
-    color: #6c757d;
+.recover-link {
+    color: #4fb5b5;
+    text-decoration: none;
     font-size: 0.88rem;
-    margin: 0;
 }
 
-/* ── Verification spinner ── */
-.verification-spinner {
+.recover-link:hover {
+    text-decoration: underline;
+}
+
+/* ═══ Validation Tooltip (right side popover) ═══ */
+
+.tooltip-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    width: 240px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     position: relative;
-    width: 72px;
-    height: 72px;
-    margin: 0 auto;
+    margin-top: 3.5rem;
+    animation: tooltipIn 0.2s ease-out;
 }
 
-.spinner-ring {
-    position: absolute;
-    inset: 0;
-    border: 3px solid rgba(0, 178, 122, 0.15);
-    border-top-color: #00B27A;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+@keyframes tooltipIn {
+    from {
+        opacity: 0;
+        transform: translateX(8px);
+    }
 
-@keyframes spin {
     to {
-        transform: rotate(360deg);
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
-.shield-icon {
+.tooltip-close {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0.5rem;
+    right: 0.6rem;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.tooltip-close:hover {
+    color: #666;
+}
+
+.tooltip-section {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tooltip-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.tooltip-section h4 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.15rem;
+}
+
+.tooltip-section p {
+    font-size: 0.75rem;
+    color: #777;
+    margin: 0 0 0.1rem;
+}
+
+.tooltip-example {
+    font-size: 0.72rem;
+    color: #aaa;
+}
+
+/* ═══ State Cards (verifying, approving, success) ═══ */
+
+.state-text {
+    color: #777;
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
 }
 
 /* ── Progress bar ── */
 .progress-bar {
     width: 100%;
     height: 4px;
-    background: #e2e8f0;
+    background: #e8e8e8;
     border-radius: 2px;
-    margin-top: 1.5rem;
     overflow: hidden;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00B27A, #00D68F);
+    background: linear-gradient(90deg, #00B27A, #4fb5b5);
     border-radius: 2px;
-    animation: progressFill 1.5s ease-in-out forwards;
+    animation: progressAnim 1.5s ease-in-out forwards;
 }
 
-@keyframes progressFill {
+@keyframes progressAnim {
     from {
         width: 0%;
     }
 
     to {
-        width: 85%;
+        width: 80%;
     }
 }
 
-/* ── Phone icon ── */
-.phone-icon {
-    margin-bottom: 0.5rem;
+/* ── Phone illustration ── */
+.phone-illustration {
+    margin: 0 auto 1rem;
 }
 
-/* ── 4-digit Verification Code ── */
+/* ── 4-digit Code ── */
 .verification-code {
     display: flex;
     justify-content: center;
     gap: 0.75rem;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0 1.5rem;
 }
 
 .code-digit {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 52px;
-    height: 60px;
-    background: linear-gradient(135deg, #f0faf5, #e8f5e9);
-    border: 2px solid #00B27A;
-    border-radius: 12px;
+    width: 50px;
+    height: 58px;
+    background: #f8fffe;
+    border: 2px solid #4fb5b5;
+    border-radius: 10px;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #00B27A;
+    color: #2d8e8e;
     font-family: 'SFMono-Regular', Consolas, monospace;
     animation: digitPop 0.3s ease-out backwards;
 }
@@ -387,7 +391,7 @@
 @keyframes digitPop {
     from {
         opacity: 0;
-        transform: scale(0.7);
+        transform: scale(0.6);
     }
 
     to {
@@ -402,9 +406,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    color: #6c757d;
+    color: #888;
     font-size: 0.85rem;
-    margin-top: 0.5rem;
 }
 
 .pulse-dot {
@@ -424,80 +427,94 @@
     }
 
     50% {
-        opacity: 0.4;
-        transform: scale(0.7);
+        opacity: 0.3;
+        transform: scale(0.6);
     }
 }
 
 /* ── Success icon ── */
 .success-icon {
-    animation: successPop 0.4s ease-out;
+    margin: 0 auto 1rem;
+    animation: successBounce 0.5s ease-out;
 }
 
-@keyframes successPop {
-    from {
+@keyframes successBounce {
+    0% {
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.3);
     }
 
-    to {
+    60% {
+        transform: scale(1.1);
+    }
+
+    100% {
         opacity: 1;
         transform: scale(1);
     }
 }
 
-/* ── Footer ── */
-.login-footer {
-    background: #fff;
-    border-top: 1px solid #e8ecef;
-    padding: 1.25rem 2rem;
+/* ═══ Page Footer (exact staging match) ═══ */
+
+.page-footer {
+    flex-shrink: 0;
     text-align: center;
-    position: relative;
-    z-index: 2;
+    padding: 0 2rem 1.25rem;
+}
+
+.footer-accent-bar {
+    height: 3px;
+    background: linear-gradient(90deg, #00B27A 0%, #4fb5b5 100%);
+    margin-bottom: 1.25rem;
+    border-radius: 2px;
 }
 
 .footer-nav {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
     justify-content: center;
     flex-wrap: wrap;
     margin-bottom: 0.6rem;
 }
 
 .footer-nav a {
-    color: #6c757d;
+    color: #555;
     text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 450;
 }
 
 .footer-nav a:hover {
-    color: #00B27A;
+    color: #4fb5b5;
 }
 
 .copyright {
-    color: #adb5bd;
-    font-size: 0.75rem;
+    color: #4fb5b5;
+    font-size: 0.8rem;
     margin: 0;
+    font-weight: 450;
 }
 
 /* ── Responsive ── */
-@media (max-width: 480px) {
-    .login-card {
-        border-radius: 12px;
+@media (max-width: 700px) {
+    .login-wrapper {
+        flex-direction: column;
+        align-items: center;
     }
 
-    .card-body {
+    .tooltip-box {
+        width: 100%;
+        max-width: 480px;
+        margin-top: 0;
+    }
+
+    .login-card {
         padding: 2rem 1.5rem;
     }
 
     .code-digit {
         width: 44px;
-        height: 52px;
+        height: 50px;
         font-size: 1.25rem;
-    }
-
-    .header-content {
-        padding: 0;
     }
 }

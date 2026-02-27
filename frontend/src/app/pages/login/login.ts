@@ -18,12 +18,12 @@ export class LoginComponent {
   state = signal<LoginState>('idle');
   verificationCode = signal('');
   errorMessage = signal('');
+  showTooltip = false;
 
   constructor(
     private authService: MockAuthService,
     private router: Router
   ) {
-    // If already logged in, redirect to dashboard
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
     }
@@ -32,16 +32,16 @@ export class LoginComponent {
   async onSubmit() {
     this.errorMessage.set('');
 
-    // Basic Emirates ID format validation
     const cleaned = this.emiratesId.replace(/[-\s]/g, '');
-    if (cleaned.length < 10) {
-      this.errorMessage.set('Please enter a valid Emirates ID number.');
+    if (!cleaned || cleaned.length < 5) {
+      this.errorMessage.set('Wrong identifier. Please check the examples and try again');
       return;
     }
 
+    this.showTooltip = false;
+
     // Step 1: Verifying
     this.state.set('verifying');
-
     await this.delay(1200);
 
     // Step 2: Show approval code
@@ -52,10 +52,9 @@ export class LoginComponent {
     try {
       await this.authService.login(this.emiratesId);
       this.state.set('success');
-
       await this.delay(800);
       this.router.navigate(['/dashboard']);
-    } catch (err) {
+    } catch {
       this.state.set('idle');
       this.errorMessage.set('Authentication failed. Please try again.');
     }
