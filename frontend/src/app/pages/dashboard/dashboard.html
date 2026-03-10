@@ -137,27 +137,12 @@
                     </div>
                 </div>
 
-                <!-- Quick Actions -->
+                <!-- Available Services — Navigation Tiles -->
                 <div class="actions-card">
                     <h3 class="actions-title">Available Services</h3>
                     <div class="services-grid">
-                        <div class="service-item">
+                        <a class="service-item" routerLink="/signature">
                             <div class="service-icon si-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M3 21h18" />
-                                    <path d="M5 21V7l8-4v18" />
-                                    <path d="M19 21V11l-6-4" />
-                                    <path d="M9 9h1" />
-                                    <path d="M9 13h1" />
-                                    <path d="M9 17h1" />
-                                </svg>
-                            </div>
-                            <span>Government Services</span>
-                        </div>
-                        <div class="service-item">
-                            <div class="service-icon si-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -166,10 +151,65 @@
                                     <path d="m16 13-3.5 3.5-2-2L8 17" />
                                 </svg>
                             </div>
-                            <span>Document Signing</span>
-                        </div>
-                        <div class="service-item">
+                            <span class="service-name">Digital Signature</span>
+                            <span class="service-desc">Sign PDFs with UAE PASS</span>
+                        </a>
+                        <a class="service-item" routerLink="/eseal">
+                            <div class="service-icon si-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    <path d="M9 12l2 2 4-4" />
+                                </svg>
+                            </div>
+                            <span class="service-name">eSeal</span>
+                            <span class="service-desc">PAdES & CAdES sealing</span>
+                        </a>
+                        <a class="service-item" routerLink="/hashsign">
                             <div class="service-icon si-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 9h16" />
+                                    <path d="M4 15h16" />
+                                    <path d="M10 3L8 21" />
+                                    <path d="M16 3l-2 18" />
+                                </svg>
+                            </div>
+                            <span class="service-name">Hash Signing</span>
+                            <span class="service-desc">Single & bulk hash sign</span>
+                        </a>
+                        <a class="service-item" routerLink="/face-verify">
+                            <div class="service-icon si-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M9 10h.01" />
+                                    <path d="M15 10h.01" />
+                                    <path d="M9.5 15a3.5 3.5 0 0 0 5 0" />
+                                    <path d="M7.5 4.2C9.1 3.4 10.5 3 12 3c1.5 0 2.9.4 4.5 1.2" />
+                                    <path
+                                        d="M19.5 8C20.3 9.6 20.5 11 20.5 12.5c0 4.1-3.6 8-8.5 8s-8.5-3.9-8.5-8c0-1.5.2-2.9 1-4.5" />
+                                </svg>
+                            </div>
+                            <span class="service-name">Face Verification</span>
+                            <span class="service-desc">Biometric identity check</span>
+                        </a>
+                        <a class="service-item" routerLink="/linking">
+                            <div class="service-icon si-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                </svg>
+                            </div>
+                            <span class="service-name">Account Linking</span>
+                            <span class="service-desc">Link / unlink UAE PASS</span>
+                        </a>
+                        <a class="service-item" routerLink="/compliance">
+                            <div class="service-icon si-6">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -178,19 +218,9 @@
                                     <circle cx="12" cy="16" r="1" />
                                 </svg>
                             </div>
-                            <span>Digital Vault</span>
-                        </div>
-                        <div class="service-item">
-                            <div class="service-icon si-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
-                                    <path d="M12 18h.01" />
-                                </svg>
-                            </div>
-                            <span>Mobile Verification</span>
-                        </div>
+                            <span class="service-name">Data & Privacy</span>
+                            <span class="service-desc">PDPL export & deletion</span>
+                        </a>
                     </div>
                 </div>
             </div>

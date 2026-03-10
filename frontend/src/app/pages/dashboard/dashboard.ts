@@ -6,7 +6,7 @@ import { MockAuthService, MockUserProfile } from '../../core/services/mock-auth.
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

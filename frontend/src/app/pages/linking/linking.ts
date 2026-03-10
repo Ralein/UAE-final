@@ -13,7 +13,7 @@ type PageState = 'view' | 'linking' | 'unlinking' | 'confirm-unlink';
     styleUrl: './linking.css',
 })
 export class LinkingComponent {
-    status = signal<LinkStatus>(this.linkService.getLinkStatus());
+    status = signal<LinkStatus>({ linked: false, linkedAt: null, userType: null, uaepassUuid: null });
     pageState = signal<PageState>('view');
     errorMsg = signal('');
 
@@ -21,7 +21,9 @@ export class LinkingComponent {
         private linkService: MockLinkingService,
         private router: Router,
         private cdr: ChangeDetectorRef
-    ) { }
+    ) {
+        this.status.set(this.linkService.getLinkStatus());
+    }
 
     async startLinking() {
         this.pageState.set('linking');
