@@ -1,0 +1,363 @@
+/* ── Shared page shell ── */
+.page-shell {
+    min-height: 100vh;
+    background: #f5f7f6;
+}
+
+.page-nav {
+    background: #fff;
+    border-bottom: 1px solid #e8ecef;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.nav-back:hover {
+    background: #f0f2f5;
+    color: #2a3039;
+}
+
+.page-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2a3039;
+    margin: 0;
+}
+
+.page-body {
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* ── Card ── */
+.card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    animation: fadeUp 0.35s ease-out;
+    margin-bottom: 1.25rem;
+}
+
+.center-card {
+    text-align: center;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Section Header ── */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2a3039;
+}
+
+.section-header.danger h3 {
+    color: #dc3545;
+}
+
+.section-desc {
+    color: #6c757d;
+    font-size: 0.85rem;
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+}
+
+.danger-text {
+    color: #856404;
+}
+
+/* ── Data Grid ── */
+.data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+}
+
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.data-item:nth-last-child(-n+2) {
+    border-bottom: none;
+}
+
+.data-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.data-value {
+    font-size: 0.85rem;
+    color: #2a3039;
+    font-weight: 600;
+}
+
+/* ── Danger Card ── */
+.danger-card {
+    border: 1.5px solid #fecaca;
+    background: #fef8f8;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #00B27A, #009968);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 14px rgba(0, 178, 122, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-danger-fill {
+    width: 100%;
+    padding: 0.8rem;
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-danger-fill:hover {
+    background: #c82333;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: #f0f2f5;
+    color: #495057;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ── Spinner ── */
+.spinner-lg {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(0, 178, 122, 0.15);
+    border-radius: 50%;
+    border-top-color: #00B27A;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.25rem;
+}
+
+.danger-spin {
+    border-color: rgba(220, 53, 69, 0.15);
+    border-top-color: #dc3545;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2a3039;
+    margin: 0 0 0.5rem;
+}
+
+.muted {
+    color: #6c757d;
+    font-size: 0.88rem;
+    margin: 0 0 1.25rem;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 460px;
+    width: 90%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #dc3545;
+}
+
+.modal-desc {
+    color: #6c757d;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+}
+
+.delete-list {
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
+.confirm-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    letter-spacing: 1px;
+    color: #dc3545;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.confirm-input:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+/* ── Error ── */
+.error-banner {
+    background: #fef2f2;
+    color: #dc3545;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+/* ── Success ── */
+.success-icon {
+    margin-bottom: 1.25rem;
+}
+
+/* ── Field Tags ── */
+.field-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.field-tag {
+    background: #f0faf5;
+    color: #00B27A;
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1px solid #c8e6c9;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+}

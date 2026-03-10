@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MockAuthService, MockUserProfile } from '../../core/services/mock-auth.service';
 
 @Component({
