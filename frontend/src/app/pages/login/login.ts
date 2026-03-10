@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +22,8 @@ export class LoginComponent {
 
   constructor(
     private authService: MockAuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
@@ -42,21 +43,25 @@ export class LoginComponent {
 
     // Step 1: Verifying
     this.state.set('verifying');
+    this.cdr.markForCheck();
     await this.delay(1200);
 
     // Step 2: Show approval code
     this.verificationCode.set(this.authService.generateVerificationCode());
     this.state.set('approving');
+    this.cdr.markForCheck();
 
     // Step 3: Simulate phone approval
     try {
       await this.authService.login(this.emiratesId);
       this.state.set('success');
+      this.cdr.markForCheck();
       await this.delay(800);
       this.router.navigate(['/dashboard']);
     } catch {
       this.state.set('idle');
       this.errorMessage.set('Authentication failed. Please try again.');
+      this.cdr.markForCheck();
     }
   }
 

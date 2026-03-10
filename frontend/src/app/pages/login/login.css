@@ -66,14 +66,15 @@
     justify-content: center;
 
 
+
+
 }
 
 .fingerprint-icon img {
     width: 200px;
     height: 200px;
     object-fit: contain;
-
-
+    margin-top: 20px;
 }
 
 .fingerprint-icon svg {

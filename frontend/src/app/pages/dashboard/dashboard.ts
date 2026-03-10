@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MockAuthService, MockUserProfile } from '../../core/services/mock-auth.service';
@@ -17,7 +17,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private authService: MockAuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -26,11 +27,12 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    // Simulate loading delay
+    // Simulate loading delay — markForCheck needed for zoneless
     setTimeout(() => {
       this.userProfile = this.authService.getProfile();
       this.sessionInfo = this.authService.getSessionInfo();
       this.loading = false;
+      this.cdr.markForCheck();
     }, 600);
   }
 
