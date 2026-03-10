@@ -1,0 +1,104 @@
+<div class="page-shell">
+    <nav class="page-nav">
+        <button class="nav-back" (click)="goBack()"><svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+                <path d="M15 10H5m0 0l4-4m-4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg> Dashboard</button>
+        <h2 class="page-title">Digital Signature</h2>
+    </nav>
+
+    <main class="page-body">
+        <!-- UPLOAD STEP -->
+        <div *ngIf="view() === 'upload'" class="card">
+            <h3 class="section-title">Sign a Document</h3>
+            <p class="section-desc">Upload a PDF document to digitally sign it via UAE PASS.</p>
+
+            <div class="dropzone" [class.drag-over]="dragOver" (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave()" (drop)="onDrop($event)" (click)="fileInput.click()">
+                <input #fileInput type="file" accept=".pdf" hidden (change)="onFileSelect($event)" />
+                <div class="dropzone-icon">
+                    <svg viewBox="0 0 48 48" fill="none" width="48" height="48">
+                        <rect x="8" y="4" width="32" height="40" rx="4" stroke="#00B27A" stroke-width="2"
+                            fill="#f0faf5" />
+                        <path d="M16 24h16M24 18v12" stroke="#00B27A" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <p *ngIf="!selectedFile">Drag & drop a PDF here, or <span class="link">browse</span></p>
+                <p *ngIf="selectedFile" class="file-selected">📄 {{ fileName }}</p>
+            </div>
+
+            <div class="params-section" *ngIf="selectedFile">
+                <h4>Signature Placement</h4>
+                <div class="params-grid">
+                    <label>Field Name <input [(ngModel)]="params.signatureFieldName" name="field" /></label>
+                    <label>Page <input type="number" [(ngModel)]="params.pageNumber" name="page" min="1" /></label>
+                    <label>X <input type="number" [(ngModel)]="params.x" name="x" /></label>
+                    <label>Y <input type="number" [(ngModel)]="params.y" name="y" /></label>
+                    <label>Width <input type="number" [(ngModel)]="params.width" name="w" /></label>
+                    <label>Height <input type="number" [(ngModel)]="params.height" name="h" /></label>
+                </div>
+                <button class="btn-primary" (click)="startSigning()">Sign Document</button>
+            </div>
+        </div>
+
+        <!-- SIGNING STEP -->
+        <div *ngIf="view() === 'signing'" class="card center-card">
+            <h3>Signing in Progress</h3>
+            <p class="muted">Your document is being processed through UAE PASS.</p>
+
+            <div class="state-machine" *ngIf="signService.currentJob() as job">
+                <div class="state-step"
+                    *ngFor="let s of ['PENDING','INITIATED','AWAITING_USER','CALLBACK_RECEIVED','COMPLETING','SIGNED']"
+                    [class.active]="job.status === s" [class.done]="isStepDone(job.status, s)">
+                    <div class="step-dot"></div>
+                    <span>{{ getStatusLabel(s) }}</span>
+                </div>
+            </div>
+
+            <div class="phone-section" *ngIf="signService.currentJob()?.status === 'AWAITING_USER'">
+                <div class="phone-icon">
+                    <svg viewBox="0 0 60 80" fill="none" width="48" height="64">
+                        <rect x="5" y="2" width="50" height="76" rx="8" stroke="#ccc" stroke-width="2" fill="white" />
+                        <rect x="10" y="10" width="40" height="52" rx="2" fill="#f8f9fa" />
+                        <circle cx="30" cy="36" r="12" fill="#e8f5e9" stroke="#00B27A" stroke-width="1.5" />
+                        <path d="M24 36l4 4 8-8" stroke="#00B27A" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <p class="waiting-text"><span class="pulse-dot"></span> Approve on your UAE PASS app</p>
+            </div>
+        </div>
+
+        <!-- COMPLETE STEP -->
+        <div *ngIf="view() === 'complete'" class="card center-card">
+            <div class="success-badge">
+                <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+                    <circle cx="32" cy="32" r="30" fill="#e8f5e9" stroke="#00B27A" stroke-width="2" />
+                    <path d="M20 32l8 8 16-16" stroke="#00B27A" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h3 style="color:#00B27A">Document Signed Successfully</h3>
+            <div class="result-info" *ngIf="signService.currentJob() as job">
+                <div class="result-row"><span>File</span><span>{{ job.fileName }}</span></div>
+                <div class="result-row"><span>LTV Applied</span><span class="ltv-badge">✓ Yes</span></div>
+                <div class="result-row"><span>Signed At</span><span>{{ job.completedAt }}</span></div>
+            </div>
+            <div class="action-row">
+                <button class="btn-primary" (click)="downloadSigned()">Download Signed PDF</button>
+                <button class="btn-outline" (click)="reset()">Sign Another</button>
+            </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card history-card" *ngIf="history.length > 0 && view() === 'upload'">
+            <h3 class="section-title">Signing History</h3>
+            <div class="history-table">
+                <div class="history-row header"><span>File</span><span>Status</span><span>Date</span></div>
+                <div class="history-row" *ngFor="let h of history"><span>{{ h.fileName }}</span><span
+                        class="status-pill" [class.signed]="h.status === 'SIGNED'">{{ h.status }}</span><span
+                        class="muted-sm">{{ h.createdAt | date:'short' }}</span></div>
+            </div>
+        </div>
+    </main>
+</div>

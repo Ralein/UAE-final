@@ -1,0 +1,116 @@
+<div class="page-shell">
+    <nav class="page-nav"><button class="nav-back" (click)="goBack()"><svg viewBox="0 0 20 20" fill="none" width="18"
+                height="18">
+                <path d="M15 10H5m0 0l4-4m-4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg> Dashboard</button>
+        <h2 class="page-title">Hash Signing</h2>
+    </nav>
+    <main class="page-body">
+        <!-- UPLOAD -->
+        <div *ngIf="view() === 'upload'" class="card">
+            <h3>Hash-Based Document Signing</h3>
+            <p class="desc">Sign documents by sending only the SHA-256 hash to the UAE PASS Docker SDK.</p>
+            <div class="type-toggle">
+                <button [class.active]="mode() === 'single'" (click)="setMode('single')">Single Document</button>
+                <button [class.active]="mode() === 'bulk'" (click)="setMode('bulk')">Bulk Documents</button>
+            </div>
+
+            <div class="dropzone" (click)="fileInput.click()">
+                <input #fileInput type="file" accept=".pdf" [attr.multiple]="mode() === 'bulk' ? '' : null" hidden
+                    (change)="onFileSelect($event)" />
+                <p *ngIf="mode() === 'single' && !selectedFile">Click to select a PDF</p>
+                <p *ngIf="mode() === 'single' && selectedFile" class="selected">📄 {{ fileName }}</p>
+                <p *ngIf="mode() === 'bulk' && bulkFiles.length === 0">Click to select multiple PDFs</p>
+                <p *ngIf="mode() === 'bulk' && bulkFiles.length > 0" class="selected">📄 {{ bulkFiles.length }} files
+                    selected</p>
+            </div>
+
+            <button *ngIf="mode() === 'single' && selectedFile" class="btn-primary" (click)="startSingleSign()">Sign via
+                Hash SDK</button>
+            <button *ngIf="mode() === 'bulk' && bulkFiles.length > 0" class="btn-primary" (click)="startBulkSign()">Sign
+                All ({{ bulkFiles.length }}) via Hash SDK</button>
+        </div>
+
+        <!-- PROCESSING -->
+        <div *ngIf="view() === 'processing'" class="card center-card">
+            <!-- Single doc flow -->
+            <div *ngIf="mode() === 'single' && hashService.currentJob() as job">
+                <div class="sdk-flow">
+                    <div class="flow-step" [class.active]="job.step === 'SDK_PROCESSING'"
+                        [class.done]="job.step !== 'SDK_PROCESSING' && job.step !== 'IDLE'">
+                        <div class="flow-num">1</div>
+                        <div class="flow-info">
+                            <strong>SDK Processing</strong>
+                            <span class="flow-detail" *ngIf="job.digestHash">SHA-256:
+                                <code>{{ job.digestHash.substring(0, 24) }}…</code></span>
+                        </div>
+                    </div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-step" [class.active]="job.step === 'AWAITING_USER'"
+                        [class.done]="job.step === 'SIGNING' || job.step === 'SIGNED'">
+                        <div class="flow-num">2</div>
+                        <div class="flow-info">
+                            <strong>User Approval</strong>
+                            <span class="flow-detail" *ngIf="job.step === 'AWAITING_USER'"><span
+                                    class="pulse-dot"></span> Approve on UAE PASS app</span>
+                        </div>
+                    </div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-step" [class.active]="job.step === 'SIGNING'" [class.done]="job.step === 'SIGNED'">
+                        <div class="flow-num">3</div>
+                        <div class="flow-info">
+                            <strong>Embedding PKCS#7 Signature</strong>
+                        </div>
+                    </div>
+                </div>
+                <p class="status-label">{{ getStepLabel(job.step) }}</p>
+            </div>
+
+            <!-- Bulk flow -->
+            <div *ngIf="mode() === 'bulk' && hashService.currentBulkJob() as bulk">
+                <h3>Bulk Signing — {{ bulk.documents.length }} Documents</h3>
+                <p class="muted">Status: {{ getStepLabel(bulk.overallStep) }}</p>
+                <div class="bulk-list">
+                    <div class="bulk-item" *ngFor="let doc of bulk.documents">
+                        <span>{{ doc.fileName }}</span>
+                        <span class="step-tag" [class.done]="doc.step === 'SIGNED'">{{ getStepLabel(doc.step) }}</span>
+                    </div>
+                </div>
+                <p class="mono-sm" *ngIf="bulk.digestsSummary">Digests Summary: {{ bulk.digestsSummary.substring(0, 32)
+                    }}…</p>
+            </div>
+        </div>
+
+        <!-- COMPLETE -->
+        <div *ngIf="view() === 'complete'" class="card center-card">
+            <div class="success-badge">
+                <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+                    <circle cx="32" cy="32" r="30" fill="#e8f5e9" stroke="#00B27A" stroke-width="2" />
+                    <path d="M20 32l8 8 16-16" stroke="#00B27A" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h3 style="color:#00B27A">{{ mode() === 'single' ? 'Document Hash-Signed' : 'All Documents Hash-Signed' }}
+            </h3>
+            <p class="muted">LTV validation has been applied.</p>
+            <div class="btn-row">
+                <button class="btn-primary" *ngIf="mode() === 'single'" (click)="downloadSigned()">Download</button>
+                <button class="btn-outline" (click)="reset()">Sign More</button>
+            </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card" *ngIf="history.length > 0 && view() === 'upload'">
+            <h3>Hash Sign History</h3>
+            <div class="history-table">
+                <div class="h-row header"><span>File</span><span>Digest</span><span>Status</span></div>
+                <div class="h-row" *ngFor="let h of history">
+                    <span>{{ h.fileName }}</span>
+                    <span class="mono-sm">{{ h.digestHash.substring(0, 16) }}…</span>
+                    <span class="done-tag">{{ h.step }}</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

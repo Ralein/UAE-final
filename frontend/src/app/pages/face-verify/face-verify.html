@@ -1,0 +1,99 @@
+<div class="page-shell">
+    <nav class="page-nav"><button class="nav-back" (click)="goBack()"><svg viewBox="0 0 20 20" fill="none" width="18"
+                height="18">
+                <path d="M15 10H5m0 0l4-4m-4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg> Dashboard</button>
+        <h2 class="page-title">Face Verification</h2>
+    </nav>
+    <main class="page-body">
+        <!-- FORM -->
+        <div *ngIf="view() === 'form'" class="card">
+            <h3>Biometric Verification</h3>
+            <p class="desc">Verify your identity via face scan before performing sensitive operations.</p>
+
+            <div class="form-group">
+                <label>Purpose</label>
+                <input [(ngModel)]="purpose" name="purpose" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label>Identify Via</label>
+                <div class="radio-group">
+                    <label class="radio-label" [class.active]="usernameType === 'EID'">
+                        <input type="radio" name="utype" value="EID" [(ngModel)]="usernameType" /> Emirates ID
+                    </label>
+                    <label class="radio-label" [class.active]="usernameType === 'MOBILE'">
+                        <input type="radio" name="utype" value="MOBILE" [(ngModel)]="usernameType" /> Mobile
+                    </label>
+                    <label class="radio-label" [class.active]="usernameType === 'EMAIL'">
+                        <input type="radio" name="utype" value="EMAIL" [(ngModel)]="usernameType" /> Email
+                    </label>
+                </div>
+            </div>
+            <button class="btn-primary" (click)="startVerification()">Start Face Verification</button>
+        </div>
+
+        <!-- SCANNING -->
+        <div *ngIf="view() === 'scanning'" class="card center-card">
+            <div class="scan-container">
+                <div class="face-outline">
+                    <svg viewBox="0 0 120 140" fill="none" width="120" height="140">
+                        <ellipse cx="60" cy="65" rx="45" ry="55" stroke="#00B27A" stroke-width="2.5"
+                            stroke-dasharray="8 4" opacity="0.6" />
+                        <circle cx="60" cy="65" r="58" stroke="#00B27A" stroke-width="1" opacity="0.2" />
+                        <circle cx="60" cy="65" r="68" stroke="#00B27A" stroke-width="0.5" opacity="0.1" />
+                    </svg>
+                    <div class="scan-line"></div>
+                </div>
+                <div class="pulse-rings">
+                    <div class="ring r1"></div>
+                    <div class="ring r2"></div>
+                    <div class="ring r3"></div>
+                </div>
+            </div>
+
+            <div *ngIf="faceService.currentVerification() as v">
+                <h3 *ngIf="v.step === 'SENDING_PUSH'">Sending push notification…</h3>
+                <h3 *ngIf="v.step === 'WAITING_SCAN'">Waiting for face scan…</h3>
+                <h3 *ngIf="v.step === 'VERIFYING'">Verifying identity…</h3>
+                <p class="muted">Open your UAE PASS app and complete the face scan.</p>
+            </div>
+        </div>
+
+        <!-- RESULT -->
+        <div *ngIf="view() === 'result'" class="card center-card">
+            <div *ngIf="faceService.currentVerification() as v">
+                <div class="result-icon" *ngIf="v.step === 'VERIFIED'">
+                    <svg viewBox="0 0 80 80" fill="none" width="72" height="72">
+                        <circle cx="40" cy="40" r="36" fill="#e8f5e9" stroke="#00B27A" stroke-width="2" />
+                        <path d="M24 40l10 10 22-22" stroke="#00B27A" stroke-width="3.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 *ngIf="v.step === 'VERIFIED'" style="color:#00B27A">Identity Verified</h3>
+                <div class="result-info">
+                    <div class="r-row"><span>Purpose</span><span>{{ v.purpose }}</span></div>
+                    <div class="r-row"><span>UUID Match</span><span class="match-badge">✓ Match</span></div>
+                    <div class="r-row"><span>Verified At</span><span>{{ v.verifiedAt }}</span></div>
+                    <div class="r-row"><span>Valid For</span><span class="expiry">{{ getExpiryCountdown() }}</span>
+                    </div>
+                </div>
+                <button class="btn-outline" (click)="reset()">Verify Again</button>
+            </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card" *ngIf="history.length > 0 && view() === 'form'">
+            <h3>Verification History</h3>
+            <div class="history-table">
+                <div class="h-row header"><span>Purpose</span><span>UUID Match</span><span>Status</span></div>
+                <div class="h-row" *ngFor="let h of history">
+                    <span>{{ h.purpose }}</span>
+                    <span [class.match]="h.uuidMatch" [class.no-match]="!h.uuidMatch">{{ h.uuidMatch ? '✓ Match' : '✗
+                        Mismatch' }}</span>
+                    <span class="status-tag" [class.verified]="h.step === 'VERIFIED'">{{ h.step }}</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

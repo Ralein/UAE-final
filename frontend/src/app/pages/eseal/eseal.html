@@ -1,0 +1,80 @@
+<div class="page-shell">
+    <nav class="page-nav"><button class="nav-back" (click)="goBack()"><svg viewBox="0 0 20 20" fill="none" width="18"
+                height="18">
+                <path d="M15 10H5m0 0l4-4m-4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg> Dashboard</button>
+        <h2 class="page-title">eSeal</h2>
+    </nav>
+    <main class="page-body">
+        <div *ngIf="view() === 'upload'" class="card">
+            <h3>Organizational eSeal</h3>
+            <p class="desc">Apply a cryptographic organizational seal to your documents via UAE PASS SOAP service.</p>
+            <div class="type-toggle">
+                <button [class.active]="sealType() === 'PADES'" (click)="setSealType('PADES')">PAdES (PDF)</button>
+                <button [class.active]="sealType() === 'CADES'" (click)="setSealType('CADES')">CAdES (Any File)</button>
+            </div>
+            <div class="dropzone" (click)="fileInput.click()">
+                <input #fileInput type="file" [accept]="sealType() === 'PADES' ? '.pdf' : '*'" hidden
+                    (change)="onFileSelect($event)" />
+                <p *ngIf="!selectedFile">Click to select a {{ sealType() === 'PADES' ? 'PDF' : 'file' }}</p>
+                <p *ngIf="selectedFile" class="selected">📄 {{ fileName }}</p>
+            </div>
+            <div class="btn-row" *ngIf="selectedFile">
+                <button class="btn-primary" (click)="startSeal()">Apply eSeal</button>
+                <button class="btn-outline" (click)="startVerify()">Verify eSeal</button>
+            </div>
+        </div>
+
+        <div *ngIf="view() === 'processing'" class="card center-card">
+            <div class="soap-spinner">
+                <div class="ring"></div>
+                <div class="ring delay"></div>
+            </div>
+            <h3>Connecting to eSeal SOAP Service…</h3>
+            <p class="muted">Processing WS-Security request with UsernameToken authentication.</p>
+        </div>
+
+        <div *ngIf="view() === 'result'" class="card center-card">
+            <div class="seal-badge">
+                <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+                    <circle cx="32" cy="32" r="28" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" />
+                    <path d="M22 32l6 6 14-14" stroke="#1976d2" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h3 style="color:#1976d2">Document Sealed</h3>
+            <div class="result-info" *ngIf="esealService.currentJob() as job">
+                <div class="r-row"><span>File</span><span>{{ job.fileName }}</span></div>
+                <div class="r-row"><span>Seal Type</span><span>{{ job.sealType }}</span></div>
+                <div class="r-row"><span>Signer</span><span class="mono-sm">{{ job.signerName }}</span></div>
+                <div class="r-row"><span>Time</span><span>{{ job.signingTime | date:'medium' }}</span></div>
+            </div>
+            <div class="btn-row">
+                <button class="btn-primary" (click)="downloadSealed()">Download Sealed Document</button>
+                <button class="btn-outline" (click)="reset()">Seal Another</button>
+            </div>
+        </div>
+
+        <div *ngIf="view() === 'verify'" class="card">
+            <h3>Verification Result</h3>
+            <div class="result-info" *ngIf="verifyResult() as vr">
+                <div class="r-row"><span>Valid</span><span class="valid-badge">{{ vr.valid ? '✓ Valid' : '✗ Invalid'
+                        }}</span></div>
+                <div class="r-row"><span>Signer</span><span class="mono-sm">{{ vr.signerName }}</span></div>
+                <div class="r-row"><span>Signing Time</span><span>{{ vr.signingTime | date:'medium' }}</span></div>
+                <div class="r-row"><span>Certificate</span><span class="mono-sm">{{ vr.certificateInfo }}</span></div>
+            </div>
+            <button class="btn-outline" (click)="reset()">Done</button>
+        </div>
+
+        <div class="card" *ngIf="history.length > 0 && view() === 'upload'">
+            <h3>Seal History</h3>
+            <div class="history-table">
+                <div class="h-row header"><span>File</span><span>Type</span><span>Status</span></div>
+                <div class="h-row" *ngFor="let h of history"><span>{{ h.fileName }}</span><span class="type-tag">{{
+                        h.sealType }}</span><span class="sealed-tag">{{ h.status }}</span></div>
+            </div>
+        </div>
+    </main>
+</div>

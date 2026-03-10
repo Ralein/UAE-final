@@ -1,16 +1,3 @@
-# UAE PASS — Master Prompts Per Phase
-### Stack: Spring Boot 3 (Java 17) · Angular 17 · Supabase (PostgreSQL) · Upstash (Redis)
-### All endpoints verified against docs.uaepass.ae
-
----
-
-> **How to use these prompts**
-> Copy each prompt exactly into your AI coding tool (Cursor, Claude, Copilot etc.) at the start of that phase.
-> Each prompt is fully self-contained — it carries the full context needed for that phase.
-> Do NOT mix phases in one session. One prompt = one focused build session.
-
----
-
 ## PHASE 0 — Foundation
 ### 🎯 Goal: Spring Boot project wired to Supabase + Upstash, CI/CD running, nothing broken.
 

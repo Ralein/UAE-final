@@ -1,0 +1,339 @@
+/* ── Shared page shell ── */
+.page-shell {
+    min-height: 100vh;
+    background: #f5f7f6;
+}
+
+.page-nav {
+    background: #fff;
+    border-bottom: 1px solid #e8ecef;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.nav-back:hover {
+    background: #f0f2f5;
+    color: #2a3039;
+}
+
+.page-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2a3039;
+    margin: 0;
+}
+
+.page-body {
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* ── Card ── */
+.card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    animation: fadeUp 0.35s ease-out;
+}
+
+.center-card {
+    text-align: center;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Status Banner ── */
+.status-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+}
+
+.status-banner.linked {
+    background: #f0faf5;
+    border: 1px solid #c8e6c9;
+}
+
+.status-banner.unlinked {
+    background: #fff8e1;
+    border: 1px solid #ffe0b2;
+}
+
+.status-banner h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2a3039;
+}
+
+.status-banner p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.status-icon {
+    flex-shrink: 0;
+}
+
+/* ── Info grid ── */
+.info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f0f2f5;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.info-value {
+    font-size: 0.9rem;
+    color: #2a3039;
+    font-weight: 500;
+}
+
+.info-value.mono {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.72rem;
+    color: #adb5bd;
+    word-break: break-all;
+    text-align: right;
+    max-width: 280px;
+}
+
+.info-value.badge {
+    background: #e8f5e9;
+    color: #00B27A;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #00B27A, #009968);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 14px rgba(0, 178, 122, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    width: 100%;
+    padding: 0.75rem;
+    background: #fff;
+    color: #dc3545;
+    border: 1.5px solid #dc3545;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-danger:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: #f0f2f5;
+    color: #495057;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ── Spinner ── */
+.spinner-lg {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(0, 178, 122, 0.15);
+    border-radius: 50%;
+    border-top-color: #00B27A;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.25rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2a3039;
+    margin: 0 0 0.5rem;
+}
+
+.muted {
+    color: #6c757d;
+    font-size: 0.88rem;
+    margin: 0 0 1.25rem;
+}
+
+/* ── Progress ── */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00B27A, #4fb5b5);
+    border-radius: 2px;
+    animation: progressSlow 2.5s ease-in-out forwards;
+}
+
+@keyframes progressSlow {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 85%;
+    }
+}
+
+.progress-fill.slow {
+    animation-duration: 2.5s;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.modal-card h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+}
+
+.modal-card p {
+    color: #6c757d;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+/* ── Error ── */
+.error-banner {
+    background: #fef2f2;
+    color: #dc3545;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+}

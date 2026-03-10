@@ -1,0 +1,372 @@
+.page-shell {
+    min-height: 100vh;
+    background: #f5f7f6;
+}
+
+.page-nav {
+    background: #fff;
+    border-bottom: 1px solid #e8ecef;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.nav-back:hover {
+    background: #f0f2f5;
+    color: #2a3039;
+}
+
+.page-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2a3039;
+    margin: 0;
+}
+
+.page-body {
+    max-width: 680px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    animation: fadeUp 0.35s ease-out;
+    margin-bottom: 1.25rem;
+}
+
+.center-card {
+    text-align: center;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2a3039;
+    margin: 0 0 0.25rem;
+}
+
+.desc {
+    color: #6c757d;
+    font-size: 0.88rem;
+    margin: 0 0 1.5rem;
+}
+
+.muted {
+    color: #6c757d;
+    font-size: 0.88rem;
+    margin: 0 0 1rem;
+}
+
+.type-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.type-toggle button {
+    flex: 1;
+    padding: 0.65rem;
+    border: none;
+    background: #fff;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.type-toggle button.active {
+    background: #00B27A;
+    color: #fff;
+}
+
+.dropzone {
+    border: 2px dashed #d4d4d4;
+    border-radius: 14px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fafbfc;
+    margin-bottom: 1.25rem;
+}
+
+.dropzone:hover {
+    border-color: #00B27A;
+    background: #f0faf5;
+}
+
+.dropzone p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.dropzone .selected {
+    color: #2a3039;
+    font-weight: 600;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #00B27A, #009968);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-outline {
+    flex: 1;
+    padding: 0.75rem;
+    background: #fff;
+    color: #00B27A;
+    border: 1.5px solid #00B27A;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* SDK 3-step flow */
+.sdk-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 1.5rem auto;
+    max-width: 380px;
+    text-align: left;
+}
+
+.flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    opacity: 0.4;
+    transition: all 0.4s;
+}
+
+.flow-step.active {
+    opacity: 1;
+}
+
+.flow-step.done {
+    opacity: 0.7;
+}
+
+.flow-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+.flow-step.active .flow-num {
+    background: #00B27A;
+    box-shadow: 0 0 0 4px rgba(0, 178, 122, 0.2);
+}
+
+.flow-step.done .flow-num {
+    background: #00B27A;
+}
+
+.flow-info strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #2a3039;
+}
+
+.flow-detail {
+    display: block;
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.15rem;
+}
+
+.flow-detail code {
+    background: #f0f2f5;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+}
+
+.flow-connector {
+    width: 2px;
+    height: 16px;
+    background: #e0e0e0;
+    margin-left: 15px;
+}
+
+.pulse-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #00B27A;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+    margin-right: 0.25rem;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.status-label {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #00B27A;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+/* Bulk list */
+.bulk-list {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.bulk-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 0.82rem;
+}
+
+.step-tag {
+    background: #f0f2f5;
+    color: #6c757d;
+    padding: 0.1rem 0.4rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.step-tag.done {
+    background: #e8f5e9;
+    color: #00B27A;
+}
+
+.success-badge {
+    margin: 0 auto 1rem;
+    animation: popIn 0.5s ease-out;
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    60% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.mono-sm {
+    font-family: monospace;
+    font-size: 0.72rem;
+    color: #adb5bd;
+}
+
+.history-table {
+    font-size: 0.82rem;
+}
+
+.h-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f2f5;
+    align-items: center;
+}
+
+.h-row.header {
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+
+.done-tag {
+    background: #e8f5e9;
+    color: #00B27A;
+    padding: 0.1rem 0.4rem;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
