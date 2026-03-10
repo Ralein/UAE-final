@@ -257,12 +257,12 @@ ng test
 |-------|-----------------------------|---------------------------------------------------------------------|--------|
 | 0     | Foundation                  | Angular project scaffold, routing, global config                    | ✅     |
 | 1     | Authentication (OIDC)       | Login page, auth guard, session cookie handling, dashboard           | ✅     |
-| 2     | User Linking                | Link/Unlink UI on dashboard (calls `/auth/link`, `/auth/unlink`)    | 🔲     |
-| 3     | Digital Signature           | PDF upload form, signing status polling, signed PDF download         | 🔲     |
-| 4     | eSeal                       | Admin upload UI for e-sealing documents                              | 🔲     |
-| 5     | Hash Signing                | Similar to Phase 3 but targets the `/hashsign/*` endpoints           | 🔲     |
-| 6     | Face Biometric              | Face verify prompt modal before sensitive actions                    | 🔲     |
-| 7     | Web Reg + Hardening         | Registration page (Private Orgs), PDPL data deletion/export UI      | 🔲     |
+| 2     | User Linking                | Link/Unlink UI on dashboard (calls `/auth/link`, `/auth/unlink`)    | ✅     |
+| 3     | Digital Signature           | PDF upload form, signing status polling, signed PDF download         | ✅     |
+| 4     | eSeal                       | Admin upload UI for e-sealing documents                              | ✅     |
+| 5     | Hash Signing                | Similar to Phase 3 but targets the `/hashsign/*` endpoints           | ✅     |
+| 6     | Face Biometric              | Face verify prompt modal before sensitive actions                    | ✅     |
+| 7     | Web Reg + Hardening         | Registration page (Private Orgs), PDPL data deletion/export UI      | ✅     |
 
 ---
 

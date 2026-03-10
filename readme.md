@@ -210,7 +210,6 @@ FACE_VERIFY_WINDOW_MINUTES=15
 INTERNAL_API_KEY=your_random_32_char_key
 ```
 
-> **⚠️ Never commit `.env` to version control.** It is already listed in `.gitignore`.
 
 ---
 
