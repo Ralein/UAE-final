@@ -19,14 +19,19 @@ import java.nio.file.Paths;
 @Profile({ "default", "staging", "mock" })
 public class LocalStorageServiceImpl implements StorageService {
 
-    private static final Path STORAGE_ROOT = Paths.get("/tmp/uaepass-storage");
+    private final Path storageRoot;
 
     public LocalStorageServiceImpl() {
+        this(Paths.get("/tmp/uaepass-storage"));
+    }
+
+    public LocalStorageServiceImpl(Path storageRoot) {
+        this.storageRoot = storageRoot;
         try {
-            Files.createDirectories(STORAGE_ROOT);
-            log.info("LocalStorageService initialized at {}", STORAGE_ROOT);
+            Files.createDirectories(this.storageRoot);
+            log.info("LocalStorageService initialized at {}", this.storageRoot);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create local storage directory: " + STORAGE_ROOT, e);
+            throw new RuntimeException("Failed to create local storage directory: " + this.storageRoot, e);
         }
     }
 
@@ -70,8 +75,8 @@ public class LocalStorageServiceImpl implements StorageService {
 
     private Path resolve(String key) {
         // Prevent path-traversal attacks
-        Path resolved = STORAGE_ROOT.resolve(key).normalize();
-        if (!resolved.startsWith(STORAGE_ROOT)) {
+        Path resolved = storageRoot.resolve(key).normalize();
+        if (!resolved.startsWith(storageRoot)) {
             throw new SecurityException("Path traversal attempt detected: " + key);
         }
         return resolved;
