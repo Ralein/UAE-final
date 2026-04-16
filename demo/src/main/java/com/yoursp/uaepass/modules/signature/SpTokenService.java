@@ -96,7 +96,6 @@ public class SpTokenService {
         return token;
     }
 
-    @SuppressWarnings("unused")
     private String getSpTokenFallback(Throwable t) {
         log.error("Circuit breaker open — SP token fetch failed: {}", t.getMessage());
         // Try returning cached even if technically expired

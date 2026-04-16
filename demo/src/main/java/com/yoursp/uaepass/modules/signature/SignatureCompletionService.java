@@ -193,7 +193,6 @@ public class SignatureCompletionService {
         }
     }
 
-    @SuppressWarnings("unused")
     private byte[] downloadFallback(String docUrl, String spToken, Throwable t) {
         throw new RuntimeException("Failed to download signed document (circuit breaker open)", t);
     }

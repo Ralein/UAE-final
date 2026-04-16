@@ -283,7 +283,6 @@ public class MultipleDocSignService {
         }
     }
 
-    @SuppressWarnings("unused")
     private SignInitiateResponse initiateMultiDocFallback(UUID userId,
             List<MultiDocRequest> docs, Throwable t) {
         throw new RuntimeException("Multi-doc signing unavailable", t);

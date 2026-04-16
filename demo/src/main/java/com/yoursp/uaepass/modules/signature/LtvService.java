@@ -134,7 +134,6 @@ public class LtvService {
         return null;
     }
 
-    @SuppressWarnings("unused")
     private byte[] applyLtvFallback(byte[] signedPdf, UUID jobId, Throwable t) {
         log.warn("LTV circuit breaker open for job {} — returning original PDF. Error: {}",
                 jobId, t.getMessage());

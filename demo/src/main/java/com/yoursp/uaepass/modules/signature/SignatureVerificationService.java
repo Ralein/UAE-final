@@ -147,7 +147,6 @@ public class SignatureVerificationService {
         return null;
     }
 
-    @SuppressWarnings("unused")
     private VerificationResult verifyFallback(byte[] signedPdf, Throwable t) {
         log.warn("Verification circuit breaker open: {}", t.getMessage());
         return VerificationResult.builder()

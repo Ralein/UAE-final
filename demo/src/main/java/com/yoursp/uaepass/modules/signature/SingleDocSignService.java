@@ -206,7 +206,6 @@ public class SingleDocSignService {
         return "[]";
     }
 
-    @SuppressWarnings("unused")
     private SignInitiateResponse initiateSigningFallback(UUID userId, byte[] pdfBytes,
             SignInitiateRequest params, Throwable t) {
         log.error("Signing initiation failed (circuit breaker): {}", t.getMessage());

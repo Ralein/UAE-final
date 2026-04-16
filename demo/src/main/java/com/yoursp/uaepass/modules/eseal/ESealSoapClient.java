@@ -124,7 +124,6 @@ public class ESealSoapClient {
         return "UNKNOWN";
     }
 
-    @SuppressWarnings("unused")
     private String executeSoapFallback(String soapEndpoint, String soapBody,
             String requestId, Throwable t) {
         log.error("eSeal circuit breaker open: requestId={}, error={}", requestId, t.getMessage());
